@@ -1,0 +1,11 @@
+# Node modules folder
+node_modules/
+
+# Temp folder 
+.tmp/
+
+# Dist folder
+dist/
+
+# manifest
+rev-manifest.json
