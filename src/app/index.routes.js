@@ -9,6 +9,10 @@
                 .state('hello', {
                     url: '',
                     templateUrl: 'app/hello/hello.html'
+                })
+                .state('realtime', {
+                    url: '/realtime',
+                    templateUrl: 'app/realtime/realtime.overview.html'
                 });
         }]);
 })();

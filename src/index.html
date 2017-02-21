@@ -4,13 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="favicon.ico">
     <script src="//cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 
     <title>Back Office</title>
 
     <link href="styles/styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Exo:400,600,800,900" rel="stylesheet">
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCBlwKrnpo7BhihtH9TPzLrPFIleoNoV8Y"></script>
 
     <!-- angular scripts -->
     <script src="js/libraries.js"></script>
@@ -18,6 +19,7 @@
 </head>
 
 <body ng-app="pbox">
+    <header class="clearfix" ng-include="'app/header/header.html'"></header>
     <div ui-view></div>
 </body>
 

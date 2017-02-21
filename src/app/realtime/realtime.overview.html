@@ -1,0 +1,9 @@
+<div ng-controller="realtimeController as vm">
+    <div class="loading" ng-show="vm.loading">LOADING...</div>
+    <div class="col-md-6 map">
+        <map-pane map-options="vm.mapOptions" map-markers="vm.mapMarkers" colors-array="vm.markerColors" draw-directions="false"></map-pane>
+    </div>
+    <div class="col-md-6 list">
+
+    </div>
+</div>

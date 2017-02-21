@@ -1,0 +1,20 @@
+<div class="container" ng-controller="headerController as vm">
+    <div class="row">
+        <div class="col-md-1 logo">
+            <img src="images/logo.png" alt="logo" width="50">
+        </div>
+        <div class="col-md-10 title">
+            <h1>PBox</h1>
+        </div>
+        <div class="col-md-1 menu">
+            <span class="glyphicon glyphicon-menu-hamburger" ng-click="vm.toggleDropdown()"></span>
+        </div>
+    </div>
+</div>
+<div class="dropdown-options" ng-show="vm.showDropdown">
+    <ul>
+        <li>Box Management</li>
+        <li>Real time tracking</li>
+        <li>History</li>
+    </ul>
+</div>

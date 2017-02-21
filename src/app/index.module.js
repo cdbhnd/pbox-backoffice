@@ -4,6 +4,10 @@
     angular.module('pbox', ['angularMoment',
         'ui.router',
         'ngStorage',
-        'pbox.hello'
+        'pbox.api',
+        'pbox.realtime',
+        'pbox.map',
+        'pbox.geolocation',
+        'pbox.header'
     ]);
 })();
