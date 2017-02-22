@@ -6,7 +6,7 @@
         .service('geolocationService', geolocationService);
 
     /** @ngInject */
-    function geolocationService($q, $rootScope, GeolocationModel, $cordovaGeolocation) {
+    function geolocationService($q, $rootScope, GeolocationModel) {
         var service = this;
 
         service.currentLocation = currentLocation;

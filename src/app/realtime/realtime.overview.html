@@ -1,9 +1,47 @@
-<div ng-controller="realtimeController as vm">
-    <div class="loading" ng-show="vm.loading">LOADING...</div>
-    <div class="col-md-6 map">
-        <map-pane map-options="vm.mapOptions" map-markers="vm.mapMarkers" colors-array="vm.markerColors" draw-directions="false"></map-pane>
-    </div>
-    <div class="col-md-6 list">
-
+<div class="realtime" ng-controller="realtimeController as vm">
+    <div class="container">
+        <div class="row search-bar">
+            <div class="col-md-2 search-field">
+                <span class="glyphicon glyphicon-search"></span>
+                <input type="text" placeholder="Search box by code...">
+            </div>
+            <div class="col-md-1 checkbox-field">
+                <input type="checkbox" name="status" value="active"> Active
+            </div>
+            <div class="col-md-1 checkbox-field">
+                <input type="checkbox" name="status" value="sleep"> Sleep
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+        <div class="row overview">
+            <div class="col-md-2 list">
+                <ul>
+                    <li>
+                        <img src="images/logo.png" alt="logo" width="40">
+                        <span>Box 123</span>
+                    </li>
+                    <li>
+                        <img src="images/logo.png" alt="logo" width="40">
+                        <span>Box 123</span>
+                    </li>
+                    <li>
+                        <img src="images/logo.png" alt="logo" width="40">
+                        <span>Box 123</span>
+                    </li>
+                    <li>
+                        <img src="images/logo.png" alt="logo" width="40">
+                        <span>Box 123</span>
+                    </li>
+                    <li>
+                        <img src="images/logo.png" alt="logo" width="40">
+                        <span>Box 123</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 map">
+                <div class="loading" ng-show="vm.loading">LOADING...</div>
+                <map-pane ng-show="!vm.loading" map-options="vm.mapOptions" map-markers="vm.mapMarkers" colors-array="vm.markerColors" draw-directions="false"></map-pane>
+            </div>
+        </div>
     </div>
 </div>

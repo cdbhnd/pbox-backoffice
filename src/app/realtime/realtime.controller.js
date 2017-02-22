@@ -11,7 +11,7 @@
         var vm = this;
 
         // public methods
-        vm.showOnMap = showOnMap;
+        // vm.showOnMap = showOnMap;
 
         //variables and properties
         var pollingPromise;

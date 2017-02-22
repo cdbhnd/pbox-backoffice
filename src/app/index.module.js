@@ -8,6 +8,8 @@
         'pbox.realtime',
         'pbox.map',
         'pbox.geolocation',
-        'pbox.header'
+        'pbox.header',
+        'pbox.history',
+        'pbox.management'
     ]);
 })();

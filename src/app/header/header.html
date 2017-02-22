@@ -10,11 +10,11 @@
             <span class="glyphicon glyphicon-menu-hamburger" ng-click="vm.toggleDropdown()"></span>
         </div>
     </div>
-</div>
-<div class="dropdown-options" ng-show="vm.showDropdown">
-    <ul>
-        <li>Box Management</li>
-        <li>Real time tracking</li>
-        <li>History</li>
-    </ul>
+    <div class="dropdown-options" ng-show="vm.showDropdown">
+        <ul>
+            <li ng-click="vm.changeState('management')"><a>Box Management</a></li>
+            <li ng-click="vm.changeState('realtime')"><a>Real time tracking</a></li>
+            <li ng-click="vm.changeState('history')"><a>History</a></li>
+        </ul>
+    </div>
 </div>

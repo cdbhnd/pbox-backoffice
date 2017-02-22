@@ -1,7 +1,7 @@
 header {
-    background-color: #2AB8F6;
+    background-color: $secondary_color;
     height: $header_height;
-    color: $header_font_color;
+    color: $primary_color;
     position: relative;
     .container {
         padding: 0;
@@ -10,10 +10,11 @@ header {
         .row {
             width: 100%;
             margin: 0;
+            box-shadow: 0px 4px 5px -2px #999997;
             .logo {
                 height: $header_height;
                 text-align: center;
-                padding: 5px;
+                padding-top: 2px;
             }
             .title {
                 height: $header_height;
@@ -23,13 +24,13 @@ header {
                 font-size: 40px;
                 font-weight: 400;
                 h1 {
-                    margin-top: 14px;
+                    margin: 10px 0 0 0;
                 }
             }
             .menu {
                 height: $header_height;
                 text-align: right;
-                padding-top: 15px;
+                padding-top: 12px;
                 span {
                     font-size: 35px;
                     cursor: pointer;
@@ -38,8 +39,30 @@ header {
         }
     }
     .dropdown-options {
-        width: 50px;
-        height: 50px;
+        z-index: 999;
+        top: 60px;
+        right: 0px;
+        width: 330px;
+        height: 138px;
         position: absolute;
+        background-color: $secondary_color;
+        color: $primary_color;
+        ul {
+            list-style-type: none;
+            padding: 0;
+            li {
+                text-decoration: none;
+                font-size: 20px;
+                display: block;
+                border-top: 1px solid $primary_color;
+                padding-left: 20px;
+                line-height: 45px;
+                cursor: pointer;
+                a {
+                    color: $primary_color;
+                    text-decoration: none;
+                }
+            }
+        }
     }
 }

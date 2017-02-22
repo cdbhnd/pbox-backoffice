@@ -1,0 +1,57 @@
+.realtime {
+    .container {
+        margin: 0;
+        width: 100%;
+        .search-bar {
+            line-height: 40px;
+            box-shadow: 0px 4px 5px 1px #999997;
+            .search-field {
+                position: relative;
+                span {
+                    position: absolute;
+                    top: 14px;
+                    left: 165px;
+                    color: $primary_color;
+                }
+                input {
+                    height: 25px;
+                    border-radius: 4px;
+                    color: $primary_color;
+                    background-color: $secondary_color;
+                    border-style: none;
+                    @include mixin-placeholder($primary_color);
+                }
+            }
+            .checkbox-field {
+                color: $tertiary_color;
+                font-weight: 600;
+                font-size: 16px;
+                padding: 0;
+            }
+        }
+        .overview {
+            .list {
+                padding: 0;
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                    li {
+                        padding-left: 15px;
+                        display: block;
+                        line-height: 60px;
+                        border-bottom: 1px solid $secondary_color;
+                        cursor: pointer;
+                        span {
+                            padding-left: 5px;
+                        }
+                    }
+                }
+            }
+            .map {
+                height: 950px; //hardcoded, must be removed!
+                padding: 0;
+                box-shadow: inset 3px 1px 5px -2px #000000;
+            }
+        }
+    }
+}
