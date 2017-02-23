@@ -16,31 +16,15 @@
         <div class="row overview">
             <div class="col-md-2 list">
                 <ul>
-                    <li>
+                    <li ng-repeat="box in vm.boxes">
                         <img src="images/logo.png" alt="logo" width="40">
-                        <span>Box 123</span>
-                    </li>
-                    <li>
-                        <img src="images/logo.png" alt="logo" width="40">
-                        <span>Box 123</span>
-                    </li>
-                    <li>
-                        <img src="images/logo.png" alt="logo" width="40">
-                        <span>Box 123</span>
-                    </li>
-                    <li>
-                        <img src="images/logo.png" alt="logo" width="40">
-                        <span>Box 123</span>
-                    </li>
-                    <li>
-                        <img src="images/logo.png" alt="logo" width="40">
-                        <span>Box 123</span>
+                        <span>{{box.code}}</span>
                     </li>
                 </ul>
             </div>
-            <div class="col-md-10 map">
+            <div class="col-md-10 map" style="height: {{heightMap}}px !important;overflow: hidden;">
                 <div class="loading" ng-show="vm.loading">LOADING...</div>
-                <map-pane ng-show="!vm.loading" map-options="vm.mapOptions" map-markers="vm.mapMarkers" colors-array="vm.markerColors" draw-directions="false"></map-pane>
+                <map-pane ng-show="!vm.loading" map-options="vm.mapOptions" map-markers="vm.mapMarkers" draw-directions="false" fit-window-height="true"></map-pane>
             </div>
         </div>
     </div>

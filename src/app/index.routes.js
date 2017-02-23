@@ -3,12 +3,12 @@
 
     angular
         .module('pbox')
-        .config(['$stateProvider', function($stateProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
             $stateProvider
-                .state('hello', {
-                    url: '',
-                    templateUrl: 'app/hello/hello.html'
+                .state('login', {
+                    url: '/',
+                    templateUrl: 'app/auth/auth.login.html'
                 })
                 .state('realtime', {
                     url: '/realtime',

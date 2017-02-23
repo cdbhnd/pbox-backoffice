@@ -4,11 +4,11 @@
         .service('realtimeService', realtimeService);
 
     /** @ngInject */
-    function realtimeService(pboxApi) {
+    function realtimeService(pboxApi, config, BoxModel) {
 
         var service = this;
 
-        service.get = getAllBoxes;
+        service.getAllBoxes = getAllBoxes;
 
         ///////////////////////////////////////////
 
@@ -18,8 +18,16 @@
                     url: config.pboxAPI.BOXES
                 })
                 .then(function(response) {
-                    var jobs = [];
-
+                    var boxes = [];
+                    if (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            boxes[i] = new BoxModel(response[i]);
+                        }
+                    }
+                    return boxes;
+                })
+                .catch(function(e) {
+                    console.log(e);
                 });
         }
     }

@@ -6,28 +6,27 @@
         .controller('realtimeController', realtimeController);
 
     /** @ngInject */
-    function realtimeController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService) {
+    function realtimeController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, realtimeService) {
 
         var vm = this;
 
         // public methods
-        // vm.showOnMap = showOnMap;
 
         //variables and properties
         var pollingPromise;
         vm.loading;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
-        vm.markerColors = ['#33CBCC', '#3F5877'];
         vm.boxes = [];
+        vm.activeBoxes = false;
 
         /////////////////////////////////////
 
         (function activate() {
+            console.dir(vm);
             startLoading()
                 .then(pollBoxesStatus)
                 .then(getCurrentLocation)
-                .then(loadMapOptions)
                 .then(loadBoxes)
                 .then(loadMapMarkers)
                 .then(cancelPollingPromiseOnScopeDestroy)
@@ -37,7 +36,7 @@
         /////////////////////////////////////
 
         function getCurrentLocation() {
-            return geolocationService.currentLocation()
+            return geolocationService.getCurrentLocation()
                 .then(function(coords) {
                     vm.mapOptions.mapCenter = coords;
                     return true;
@@ -45,37 +44,28 @@
         }
 
         function loadBoxes() {
-            return realtimeService.get()
+            return realtimeService.getAllBoxes()
                 .then(function(response) {
-                    vm.boxes = response;
-                    if (!response) {
+                    if (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            vm.boxes.push(response[i]);
+                        }
+                    } else {
                         console.log('Job could not be found !');
                     }
                 })
-                .catch(function(err) {
-                    console.log('Job could not be found !');
+                .catch(function(e) {
+                    console.log(e);
                 });
         }
 
         function loadMapMarkers() {
             return $q.when(function() {
                 for (var i = 0; i < vm.boxes.length; i++) {
-                    if (!!vm.boxes[i]) {
+                    if (!!vm.boxes[i] && vm.boxes[i].gps_sensor) {
                         vm.mapMarkers.push(vm.boxes[i]);
                     }
                 }
-            }());
-        }
-
-        function loadMapOptions() {
-            return $q.when(function() {
-                vm.mapOptions.disableDefaultUI = true;
-                vm.mapOptions.zoomControl = false;
-                vm.mapOptions.streetViewControl = false;
-                vm.mapOptions.draggable = false;
-                vm.mapOptions.scrollwheel = false;
-                vm.mapOptions.disableDoubleClickZoom = true;
-                return true;
             }());
         }
 
@@ -115,11 +105,15 @@
         }
 
         function startLoading() {
-            vm.loading = true;
+            return $q.when(function() {
+                vm.loading = true;
+            });
         }
 
         function stopLoading() {
-            vm.loading = false;
+            return $q.when(function() {
+                vm.loading = false;
+            });
         }
     }
 })();
