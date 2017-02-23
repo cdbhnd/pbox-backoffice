@@ -66,13 +66,15 @@
             function subscribeOnMarkersChange() {
                 return $q.when(function() {
                     scope.$watch('mapMarkers', function() {
-                        if (!scope.map || !scope.mapMarkers) {
+                        if (!scope.map) {
                             return false;
                         }
+                        if (!scope.mapMarkers.length) {
+                            removeMarkersFromMap();
+                        }
+
                         for (var i = 0; i < scope.mapMarkers.length; i++) {
-                            if (scope.mapMarkers[i].gps_sensor.value) {
-                                buildMarker(scope.mapMarkers[i].gps_sensor.value.latitude, scope.mapMarkers[i].gps_sensor.value.longitude, scope.map, scope.mapMarkers[i].code);
-                            }
+                            buildMarker(scope.mapMarkers[i].latitude, scope.mapMarkers[i].longitude, scope.map, scope.mapMarkers[i].code);
                         }
                         var bounds = new google.maps.LatLngBounds();
                         for (var i = 0; i < markers.length; i++) {

@@ -23,7 +23,6 @@
             this.gps_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'GPS') : null;
             this.temp_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'TEMPERATURE') : null;
             this.acc_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'ACCELEROMETER') : null;
-            this.battery_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'BATTERY') : null;
 
             this._listen_active = false;
             this._sensors = obj && obj.sensors ? obj.sensors : [];
@@ -44,14 +43,30 @@
         }
 
         BoxModel.prototype.setSensorValue = function(sensorId, value) {
-            if (!!this.battery_sensor && this.battery_sensor.assetId == sensorId) {
-                console.log('Battery sensor updated');
+            if (!!this.gps_sensor && this.gps_sensor.assetId == sensorId) {
+                console.log('GPS sensor updated');
                 console.log(value);
-                var batteryData = value.split(",");
-                this.battery_sensor.value = {
-                    percentage: batteryData[0],
-                    charging: batteryData[1]
+                var geolocationModel = new GeolocationModel();
+                this.gps_sensor.value = geolocationModel.parseGpsSensorValue(value);
+            }
+            if (!!this.temp_sensor && this.temp_sensor.assetId == sensorId) {
+                console.log('Temp sensor updated');
+                console.log(value);
+                var tempHumi = value.split(",");
+                this.temp_sensor.value = {
+                    temperature: tempHumi[0],
+                    humidity: tempHumi[1]
                 }
+            }
+            if (!!this.acc_sensor && this.acc_sensor.assetId == sensorId) {
+                console.log('Acc sensor updated');
+                console.log(value);
+                var accelerometerValues = value.split(",");
+                this.acc_sensor.value = {
+                    ax: accelerometerValues[0],
+                    ay: accelerometerValues[1],
+                    az: accelerometerValues[2]
+                };
             }
         }
 

@@ -11,15 +11,23 @@
         var vm = this;
 
         // public methods
+        vm.filterBoxes = filterBoxes;
 
         //variables and properties
         var pollingPromise;
+        var boxes = [];
+        var filterInitialized = false;
         vm.loading;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
-        vm.boxes = [];
-        vm.activeBoxes = false;
-
+        vm.filteredBoxes = [];
+        vm.filterQuery = {
+            code: null,
+            activeStatus: true,
+            sleepStatus: false
+        };
+        vm.blueprintFilteredBoxes = [];
+        vm.noResults = false;
         /////////////////////////////////////
 
         (function activate() {
@@ -28,6 +36,7 @@
                 .then(pollBoxesStatus)
                 .then(getCurrentLocation)
                 .then(loadBoxes)
+                .then(filterBoxes)
                 .then(loadMapMarkers)
                 .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
@@ -48,7 +57,12 @@
                 .then(function(response) {
                     if (response) {
                         for (var i = 0; i < response.length; i++) {
-                            vm.boxes.push(response[i]);
+                            boxes.push(response[i]);
+                        }
+                        for (var i = 0; i < response.length; i++) {
+                            if (boxes[i].status != 'IDLE') {
+                                vm.blueprintFilteredBoxes.push(boxes[i]);
+                            }
                         }
                     } else {
                         console.log('Job could not be found !');
@@ -61,12 +75,21 @@
 
         function loadMapMarkers() {
             return $q.when(function() {
-                for (var i = 0; i < vm.boxes.length; i++) {
-                    if (!!vm.boxes[i] && vm.boxes[i].gps_sensor) {
-                        vm.mapMarkers.push(vm.boxes[i]);
+                vm.mapMarkers.length = 0;
+                for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                    if (!!vm.filteredBoxes[i] && vm.filteredBoxes[i].gps_sensor) {
+                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
                     }
                 }
+                filterInitialized = true;
             }());
+        }
+
+        function setMarkerProperties(geolocationObj) {
+            vm.mapMarkers.push({
+                latitude: parseFloat(geolocationObj.latitude),
+                longitude: parseFloat(geolocationObj.longitude)
+            });
         }
 
         function loadBoxesStatus() {
@@ -114,6 +137,54 @@
             return $q.when(function() {
                 vm.loading = false;
             });
+        }
+
+        function filterBoxes() {
+            return $q.when(function() {
+                var query = vm.filterQuery;
+
+                vm.filteredBoxes.length = 0;
+
+                if (!query.activeStatus && query.sleepStatus) {
+                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                        if (vm.blueprintFilteredBoxes[i].status == 'SLEEP') {
+                            vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
+                        }
+                    }
+                } else if (query.activeStatus && !query.sleepStatus) {
+                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                        if (vm.blueprintFilteredBoxes[i].status == 'ACTIVE') {
+                            vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
+                        }
+                    }
+                } else if (!query.activeStatus && !query.sleepStatus) {
+                    vm.filteredBoxes.length = 0;
+                } else {
+                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                        vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
+                    }
+                }
+
+                if (!!query.code && query.code != '') {
+                    var helper = angular.copy(vm.filteredBoxes);
+                    vm.filteredBoxes.length = 0;
+                    for (var i = 0; i < helper.length; i++) {
+                        if (helper[i].code == query.code) {
+                            vm.filteredBoxes.push(helper[i]);
+                        }
+                    }
+                }
+
+                if (vm.filteredBoxes.length == 0) {
+                    vm.noResults = true;
+                } else {
+                    vm.noResults = false;
+                }
+
+                if (filterInitialized) {
+                    loadMapMarkers();
+                }
+            }());
         }
     }
 })();
