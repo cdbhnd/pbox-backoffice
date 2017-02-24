@@ -1,0 +1,19 @@
+<div class="log-in" ng-controller="authController as vm">
+    <div class="image">
+        <img src="images/logo.png" alt="logo">
+    </div>
+    <div class="title">
+        <h1>PBox</h1>
+    </div>
+    <div class="list">
+        <label class="item item-input">
+            <input type="text" placeholder="Username" ng-model="vm.user.username">
+        </label>
+        <label class="item item-input">
+            <input type="password" placeholder="Password" ng-model="vm.user.password">
+        </label>
+    </div>
+    <button class="button button-block button-main" ng-click="vm.loginUser()">
+        Log In
+    </button>
+</div>

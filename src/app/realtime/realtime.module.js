@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('pbox.hello', []);
+        .module('pbox.realtime', []);
 })();
