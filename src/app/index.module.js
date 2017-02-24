@@ -5,14 +5,15 @@
             'ui.router',
             'ngStorage',
             'pbox.api',
-            'pbox.realtime',
+            'pbox.box',
             'pbox.map',
             'pbox.geolocation',
             'pbox.header',
             'pbox.history',
             'pbox.management',
             'pbox.auth',
-            'pbox.iot'
+            'pbox.iot',
+            'pbox.loader'
         ])
         .run(function($rootScope, $state, authService) {
             authService.init();

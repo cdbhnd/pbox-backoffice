@@ -1,9 +1,14 @@
-.realtime {
+.overview {
     .container {
         margin: 0;
         width: 100%;
         .search-bar {
+            position: fixed;
+            top: 60px;
+            width: 100%;
+            z-index: 9;
             line-height: 40px;
+            background-color: $primary_color;
             box-shadow: 0px 4px 5px 1px #999997;
             .search-field {
                 position: relative;
@@ -30,9 +35,11 @@
                 padding: 0;
             }
         }
-        .overview {
+        .results {
             .list {
+                z-index: 6;
                 padding: 0;
+                padding-top: 40px;
                 ul {
                     list-style-type: none;
                     padding: 0;
@@ -42,6 +49,14 @@
                         line-height: 60px;
                         border-bottom: 1px solid $secondary_color;
                         cursor: pointer;
+                        a {
+                            font-weight: 600;
+                            text-decoration: none;
+                            color: $secondary_color;
+                            &:hover {
+                                color: $secondary_color;
+                            }
+                        }
                         span {
                             padding-left: 5px;
                         }
@@ -49,6 +64,7 @@
                 }
             }
             .map {
+                z-index: 7;
                 padding: 0;
                 box-shadow: inset 3px 1px 5px -2px #000000;
             }

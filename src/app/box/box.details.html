@@ -1,0 +1,9 @@
+<div class="details" ng-controller="boxDetailsController as vm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 map">
+                <map-pane ng-show="!vm.loading" map-options="vm.mapOptions" map-markers="vm.mapMarkers" draw-directions="false" fit-window-height="true"></map-pane>
+            </div>
+        </div>
+    </div>
+</div>

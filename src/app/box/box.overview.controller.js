@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('pbox.realtime')
-        .controller('realtimeController', realtimeController);
+        .module('pbox.box')
+        .controller('boxOverviewController', boxOverviewController);
 
     /** @ngInject */
-    function realtimeController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, realtimeService) {
+    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, boxService) {
 
         var vm = this;
 
@@ -17,7 +17,7 @@
         var pollingPromise;
         var boxes = [];
         var filterInitialized = false;
-        vm.loading;
+        vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
@@ -31,14 +31,13 @@
         /////////////////////////////////////
 
         (function activate() {
-            console.dir(vm);
             startLoading()
-                .then(pollBoxesStatus)
+                // .then(pollBoxesStatus)
                 .then(getCurrentLocation)
                 .then(loadBoxes)
                 .then(filterBoxes)
                 .then(loadMapMarkers)
-                .then(cancelPollingPromiseOnScopeDestroy)
+                // .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
         }());
 
@@ -53,7 +52,7 @@
         }
 
         function loadBoxes() {
-            return realtimeService.getAllBoxes()
+            return boxService.getAllBoxes()
                 .then(function(response) {
                     if (response) {
                         for (var i = 0; i < response.length; i++) {
@@ -65,7 +64,7 @@
                             }
                         }
                     } else {
-                        console.log('Job could not be found !');
+                        vm.noResults = true;
                     }
                 })
                 .catch(function(e) {
@@ -93,17 +92,24 @@
         }
 
         function loadBoxesStatus() {
-            if (!vm.box) {
+            if (!vm.blueprintFilteredBoxes) {
                 return true;
             }
+            for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                if (!!vm.blueprintFilteredBoxes[i]) {
+                    startStatusPolling(vm.blueprintFilteredBoxes[i]);
+                }
+            }
+            return true;
+        }
 
-            return realtimeService.getBoxStatus(vm.job.box)
+        function startStatusPolling(box) {
+            boxService.getBoxStatus(box.code)
                 .then(function(response) {
-                    vm.box.status = response.status;
-                    return true;
+                    box.status = response.status;
                 })
-                .catch(function(err) {
-                    console.log(err);
+                .catch(function(e) {
+                    console.log(e);
                 });
         }
 

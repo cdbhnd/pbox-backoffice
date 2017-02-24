@@ -35,6 +35,7 @@
             var directions = {};
             var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
             var directionsService = new google.maps.DirectionsService();
+            var headerSize = 60;
 
             scope.mapId = guid();
             scope.map = null;
@@ -43,7 +44,7 @@
             scope.height = null;
 
             (function activate() {
-                scope.height = $window.innerHeight - 100;
+                scope.height = $window.innerHeight - headerSize;
                 subscribeOnOptionsChange()
                     .then(watchWindowHeightChanges)
                     .then(subscribeOnMarkersChange);
@@ -92,7 +93,7 @@
             function watchWindowHeightChanges() {
                 return $q.when(function() {
                     angular.element($window).bind('resize', function() {
-                        scope.height = $window.innerHeight - 100;
+                        scope.height = $window.innerHeight - headerSize;
                         $rootScope.heightMap = scope.height;
                         console.log(scope.height);
                         scope.$digest();

@@ -26,7 +26,7 @@
             if (vm.user.username && vm.user.password) {
                 login()
                     .then(function(response) {
-                        $state.go('realtime');
+                        $state.go('boxes-overview');
                     })
                     .catch(function(e) {
                         if (e.status === 401) {
@@ -51,7 +51,7 @@
                 return authService.currentUser()
                     .then(function(user) {
                         if (!!user) {
-                            $state.go('realtime');
+                            $state.go('boxes-overview');
                             return false;
                         }
                         return true;
