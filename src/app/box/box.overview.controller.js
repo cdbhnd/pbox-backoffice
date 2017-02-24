@@ -43,6 +43,21 @@
 
         /////////////////////////////////////
 
+        function startLoading() {
+            return $q.when(function() {
+                vm.loading = true;
+            });
+        }
+
+        function pollBoxesStatus() {
+            return $q.when(function() {
+                pollingPromise = $interval(function() {
+                    return loadBoxesStatus();
+                }, 10000);
+                return true;
+            }());
+        }
+
         function getCurrentLocation() {
             return geolocationService.getCurrentLocation()
                 .then(function(coords) {
@@ -70,79 +85,6 @@
                 .catch(function(e) {
                     console.log(e);
                 });
-        }
-
-        function loadMapMarkers() {
-            return $q.when(function() {
-                vm.mapMarkers.length = 0;
-                for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                    if (!!vm.filteredBoxes[i] && vm.filteredBoxes[i].gps_sensor) {
-                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
-                    }
-                }
-                filterInitialized = true;
-            }());
-        }
-
-        function setMarkerProperties(geolocationObj) {
-            vm.mapMarkers.push({
-                latitude: parseFloat(geolocationObj.latitude),
-                longitude: parseFloat(geolocationObj.longitude)
-            });
-        }
-
-        function loadBoxesStatus() {
-            if (!vm.blueprintFilteredBoxes) {
-                return true;
-            }
-            for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                if (!!vm.blueprintFilteredBoxes[i]) {
-                    startStatusPolling(vm.blueprintFilteredBoxes[i]);
-                }
-            }
-            return true;
-        }
-
-        function startStatusPolling(box) {
-            boxService.getBoxStatus(box.code)
-                .then(function(response) {
-                    box.status = response.status;
-                })
-                .catch(function(e) {
-                    console.log(e);
-                });
-        }
-
-        function pollBoxesStatus() {
-            return $q.when(function() {
-                pollingPromise = $interval(function() {
-                    return loadBoxesStatus();
-                }, 10000);
-                return true;
-            }());
-        }
-
-        function cancelPollingPromiseOnScopeDestroy() {
-            return $q.when(function() {
-                $scope.$on('$destroy', function() {
-                    if (!!pollingPromise) {
-                        $interval.cancel(pollingPromise);
-                    }
-                });
-                return true;
-            }());
-        }
-
-        function startLoading() {
-            return $q.when(function() {
-                vm.loading = true;
-            });
-        }
-
-        function stopLoading() {
-            return $q.when(function() {
-                vm.loading = false;
-            });
         }
 
         function filterBoxes() {
@@ -191,6 +133,66 @@
                     loadMapMarkers();
                 }
             }());
+        }
+
+        function loadMapMarkers() {
+            return $q.when(function() {
+                vm.mapMarkers.length = 0;
+                for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                    if (!!vm.filteredBoxes[i] && vm.filteredBoxes[i].gps_sensor) {
+                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
+                    }
+                }
+                filterInitialized = true;
+            }());
+        }
+
+        function setMarkerProperties(geolocationObj) {
+            vm.mapMarkers.push({
+                latitude: parseFloat(geolocationObj.latitude),
+                longitude: parseFloat(geolocationObj.longitude)
+            });
+        }
+
+        function cancelPollingPromiseOnScopeDestroy() {
+            return $q.when(function() {
+                $scope.$on('$destroy', function() {
+                    if (!!pollingPromise) {
+                        $interval.cancel(pollingPromise);
+                    }
+                });
+                return true;
+            }());
+        }
+
+        function stopLoading() {
+            return $q.when(function() {
+                vm.loading = false;
+            });
+        }
+
+        ////////////////////////////////////////////// helper function's
+
+        function loadBoxesStatus() {
+            if (!vm.blueprintFilteredBoxes) {
+                return true;
+            }
+            for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                if (!!vm.blueprintFilteredBoxes[i]) {
+                    startStatusPolling(vm.blueprintFilteredBoxes[i]);
+                }
+            }
+            return true;
+        }
+
+        function startStatusPolling(box) {
+            boxService.getBoxStatus(box.code)
+                .then(function(response) {
+                    box.status = response.status;
+                })
+                .catch(function(e) {
+                    console.log(e);
+                });
         }
     }
 })();

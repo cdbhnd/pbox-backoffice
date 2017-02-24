@@ -16,7 +16,10 @@
                 })
                 .state('box-details', {
                     url: '/boxes-overview/box-details/{boxCode}',
-                    templateUrl: 'app/box/box.details.html'
+                    templateUrl: 'app/box/box.details.html',
+                    data: {
+                        showBackButton: true
+                    }
                 })
                 .state('management', {
                     url: '/management',

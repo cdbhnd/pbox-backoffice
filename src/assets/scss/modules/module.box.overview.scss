@@ -7,7 +7,7 @@
             top: 60px;
             width: 100%;
             z-index: 9;
-            line-height: 40px;
+            line-height: $search_bar_height;
             background-color: $primary_color;
             box-shadow: 0px 4px 5px 1px #999997;
             .search-field {
@@ -38,8 +38,7 @@
         .results {
             .list {
                 z-index: 6;
-                padding: 0;
-                padding-top: 40px;
+                padding: $search_bar_height 0 0;
                 ul {
                     list-style-type: none;
                     padding: 0;
@@ -73,11 +72,17 @@
 }
 
 @media (max-width: 767px) {
-    .realtime {
+    .overview {
         .container {
             .search-bar {
                 .checkbox-field {
                     text-align: center;
+                }
+            }
+            .results {
+                .list {
+                    z-index: 6;
+                    padding: ($search_bar_height * 2) 0 0;
                 }
             }
         }

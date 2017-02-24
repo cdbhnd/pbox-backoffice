@@ -21,6 +21,7 @@
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams) {
                     $rootScope.current_state = toState;
+                    $rootScope.previous_state = fromState;
                 });
         });
 })();

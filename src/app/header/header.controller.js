@@ -27,8 +27,11 @@
             vm.showDropdown = !vm.showDropdown;
         }
 
-        function changeState(state) {
+        function changeState(state, dontToggleDropdown) {
             $state.go(state);
+            if (!!dontToggleDropdown) {
+                return false;
+            }
             toggleDropdown();
         }
     }

@@ -1,8 +1,40 @@
 <div class="details" ng-controller="boxDetailsController as vm">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 map">
+        <div class="row map">
+            <div class="col-md-12 inner" ng-show="vm.mapMarkers">
                 <map-pane ng-show="!vm.loading" map-options="vm.mapOptions" map-markers="vm.mapMarkers" draw-directions="false" fit-window-height="true"></map-pane>
+            </div>
+        </div>
+        <div class="row params">
+            <div class="col-md-4 col-sm-4 col-xs-6 param">
+                <div class="inner gps">
+                    <p ng-show="vm.box.gps_sensor.value">
+                        {{vm.box.gps_sensor.value.latitude}}, {{vm.box.gps_sensor.value.longitude}}
+                    </p>
+                    <p ng-show="!vm.box.gps_sensor.value">
+                        GPS
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-3 param">
+                <div class="inner">
+                    <p ng-show="vm.box.temp_sensor.value">
+                        {{vm.box.temp_sensor.value.temperature}}
+                    </p>
+                    <p ng-show="!vm.box.temp_sensor.value">
+                        TEMP
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-3 param">
+                <div class="inner">
+                    <p ng-show="vm.box.battery_sensor.value">
+                        {{vm.box.battery_sensor.value}}
+                    </p>
+                    <p ng-show="!vm.box.battery_sensor.value">
+                        BATT
+                    </p>
+                </div>
             </div>
         </div>
     </div>

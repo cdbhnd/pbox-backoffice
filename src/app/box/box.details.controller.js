@@ -28,10 +28,9 @@
             startLoading()
                 .then(initializeState)
                 .then(pollBoxesStatus)
-                .then(setMapOptions)
-                .then(getCurrentLocation)
                 .then(loadBox)
                 .then(loadMapMarker)
+                .then(setMapOptions)
                 .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
         }());
@@ -57,19 +56,6 @@
             }());
         }
 
-        function setMapOptions() {
-            vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-            vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-        }
-
-        function getCurrentLocation() {
-            return geolocationService.getCurrentLocation()
-                .then(function(coords) {
-                    vm.mapOptions.mapCenter = coords;
-                    return true;
-                });
-        }
-
         function loadBox() {
             return boxService.getSingleBox(vm.box.code)
                 .then(function(response) {
@@ -84,6 +70,12 @@
                     setMarkerProperties(vm.box.gps_sensor.value);
                 }
             }());
+        }
+
+        function setMapOptions() {
+            vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
+            vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
+            vm.mapOptions.mapCenter = vm.mapMarkers[0];
         }
 
         function cancelPollingPromiseOnScopeDestroy() {
@@ -115,8 +107,8 @@
                     vm.box.status = response.status;
                     return true;
                 })
-                .catch(function(err) {
-                    console.log(err);
+                .catch(function(e) {
+                    console.log(e);
                 });
         }
 

@@ -3,11 +3,12 @@
         <div class="col-md-1 col-sm-2 col-xs-3 logo">
             <img src="images/logo.png" alt="logo" width="50">
         </div>
-        <div class="col-md-10 col-sm-8 col-xs-7 title">
+        <div class="col-md-10 col-sm-8 col-xs-6 title">
             <h1>PBox</h1>
         </div>
-        <div class="col-md-1 col-sm-2 col-xs-2 menu">
-            <span class="glyphicon glyphicon-menu-hamburger" ng-click="vm.toggleDropdown()"></span>
+        <div class="col-md-1 col-sm-2 col-xs-3 menu">
+            <span class="glyphicon glyphicon-menu-hamburger" ng-click="vm.toggleDropdown()" ng-show="!(current_state.data && current_state.data.showBackButton)"></span>
+            <span class="glyphicon glyphicon-chevron-left" ng-click="vm.changeState(previous_state, true)" ng-show="(current_state.data && current_state.data.showBackButton)"></span>
         </div>
     </div>
     <div class="dropdown-options" ng-show="vm.showDropdown">
