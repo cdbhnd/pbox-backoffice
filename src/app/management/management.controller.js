@@ -36,15 +36,15 @@
         }
 
         function deleteBox(index) {
-            console.log('Delete box');
+            console.log('Delete box' + vm.boxes[index].deviceId);
         }
 
         function reactivateBox(index) {
-            console.log('Reactivate box');
+            console.log('Reactivate box' + vm.boxes[index].deviceId);
         }
 
         function syncBox(index) {
-            console.log('Sync box');
+            console.log('Sync box' + vm.boxes[index].deviceId);
         }
     }
 })();
