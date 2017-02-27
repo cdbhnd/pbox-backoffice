@@ -104,13 +104,14 @@
 
     gulp.task('libraries', function() {
         return gulp.src([
+                config.paths.node_modules + '/jquery/dist/jquery.min.js',
+                config.paths.node_modules + '/datatables/media/js/jquery.dataTables.min.js',
                 config.paths.node_modules + '/angular/angular.min.js',
                 config.paths.node_modules + '/angular-ui-router/release/angular-ui-router.min.js',
                 config.paths.node_modules + '/ngstorage/ngStorage.min.js',
                 config.paths.node_modules + '/moment/min/moment.min.js',
                 config.paths.node_modules + '/angular-moment/angular-moment.min.js',
                 config.paths.node_modules + '/stompjs/lib/stomp.min.js',
-                config.paths.node_modules + '/jquery/dist/jquery.min.js',
                 config.paths.node_modules + '/bootstrap/dist/js/bootstrap.min.js'
             ])
             .pipe(concatenate('libraries.js'))

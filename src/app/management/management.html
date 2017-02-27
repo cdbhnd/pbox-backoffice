@@ -1,1 +1,35 @@
-management
+<div class="container" ng-controller="managementController as vm">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" ng-submit="">
+                <table datatable="ng"  dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="row-border hover">
+                    <thead>
+                    <tr>
+                        <th>code</th>
+                        <th>deviceId</th>
+                        <th>status</th>
+                        <th>battery</th>
+                        <th>sensors</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="box in vm.boxes">
+                        <td>{{ box.id }}</td>
+                        <td>{{ box.deviceId }}</td>
+                        <td>{{ box.status }}</td>
+                        <td>{{ box.battery }}</td>
+                        <td>{{ box.sensors[0].name }}</td>
+                        <td>
+                            <button type="button" ng-click="vm.syncBox($index)" class="btn btn-info"><i class="glyphicon glyphicon-play-circle"></i></button>
+                            <button type="button" ng-click="vm.syncBox($index)" class="btn btn-success"><i class="glyphicon glyphicon-refresh"></i></button>
+                            <button type="button" ng-click="vm.deleteBox($index)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    
+</div>
