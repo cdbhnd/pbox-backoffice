@@ -1,7 +1,8 @@
 (function() {
     'use strict';
 
-    angular.module('pbox', ['angularMoment',
+    angular
+        .module('pbox', ['angularMoment',
             'ui.router',
             'ngStorage',
             'pbox.api',

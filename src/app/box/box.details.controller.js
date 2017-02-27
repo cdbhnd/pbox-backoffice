@@ -14,7 +14,7 @@
 
         //variables and properties
         var pollingPromise;
-        var boxCode;
+        var boxCode = $stateParams.boxCode;
         vm.loading = false;
         vm.box = {
             code: null
@@ -26,7 +26,6 @@
 
         (function activate() {
             startLoading()
-                .then(initializeState)
                 .then(pollBoxesStatus)
                 .then(loadBox)
                 .then(loadMapMarker)
@@ -43,10 +42,6 @@
             });
         }
 
-        function initializeState() {
-            vm.box.code = $stateParams.boxCode;
-        }
-
         function pollBoxesStatus() {
             return $q.when(function() {
                 pollingPromise = $interval(function() {
@@ -57,9 +52,13 @@
         }
 
         function loadBox() {
-            return boxService.getSingleBox(vm.box.code)
+            return boxService.getSingleBox(boxCode)
                 .then(function(response) {
                     vm.box = response;
+                    vm.box.activate();
+                    $scope.$on('$destroy', function() {
+                        vm.box.deactivate();
+                    });
                     return true;
                 });
         }
