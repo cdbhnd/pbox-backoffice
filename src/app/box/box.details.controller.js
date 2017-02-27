@@ -6,7 +6,7 @@
         .controller('boxDetailsController', boxDetailsController);
 
     /** @ngInject */
-    function boxDetailsController($q, $scope, $interval, $stateParams, $state, mapConfig, boxService, geolocationService) {
+    function boxDetailsController($q, $scope, $interval, $stateParams, $state, mapConfig, boxService, geolocationService, GeolocationModel) {
 
         var vm = this;
 
@@ -15,6 +15,7 @@
         //variables and properties
         var pollingPromise;
         var boxCode = $stateParams.boxCode;
+        var fallbackCoords = new GeolocationModel();
         vm.loading = false;
         vm.box = {
             code: null
@@ -27,6 +28,7 @@
         (function activate() {
             startLoading()
                 .then(pollBoxesStatus)
+                .then(getCurrentLocation)
                 .then(loadBox)
                 .then(loadMapMarker)
                 .then(setMapOptions)
@@ -40,6 +42,14 @@
             return $q.when(function() {
                 vm.loading = true;
             });
+        }
+
+        function getCurrentLocation() {
+            return geolocationService.getCurrentLocation()
+                .then(function(coords) {
+                    fallbackCoords = coords;
+                    return true;
+                });
         }
 
         function pollBoxesStatus() {
@@ -65,16 +75,18 @@
 
         function loadMapMarker() {
             return $q.when(function() {
-                if (!!vm.box && vm.box.gps_sensor) {
-                    setMarkerProperties(vm.box.gps_sensor.value);
-                }
+                $scope.$watch('vm.box.gps_sensor.value', function() {
+                    if (!!vm.box.gps_sensor && vm.box.gps_sensor.value) {
+                        setMarkerProperties(vm.box.gps_sensor.value);
+                    }
+                }, true);
             }());
         }
 
         function setMapOptions() {
             vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
             vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-            vm.mapOptions.mapCenter = vm.mapMarkers[0];
+            vm.mapOptions.mapCenter = vm.mapMarkers[0] ? vm.mapMarkers[0] : fallbackCoords;
         }
 
         function cancelPollingPromiseOnScopeDestroy() {
@@ -112,10 +124,11 @@
         }
 
         function setMarkerProperties(geolocationObj) {
+            vm.mapMarkers.length = 0;
             vm.mapMarkers.push({
                 latitude: parseFloat(geolocationObj.latitude),
                 longitude: parseFloat(geolocationObj.longitude)
-            });
+            })
         }
     }
 })();

@@ -70,9 +70,7 @@
                         if (!scope.map) {
                             return false;
                         }
-                        if (!scope.mapMarkers.length) {
-                            removeMarkersFromMap();
-                        }
+                        removeMarkersFromMap();
 
                         for (var i = 0; i < scope.mapMarkers.length; i++) {
                             buildMarker(scope.mapMarkers[i].latitude, scope.mapMarkers[i].longitude, scope.map, scope.mapMarkers[i].code);

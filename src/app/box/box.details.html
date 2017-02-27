@@ -12,7 +12,7 @@
                         {{vm.box.gps_sensor.value.latitude}}, {{vm.box.gps_sensor.value.longitude}}
                     </p>
                     <p ng-show="!vm.box.gps_sensor.value">
-                        GPS
+                        LDG...
                     </p>
                 </div>
             </div>
@@ -22,17 +22,17 @@
                         {{vm.box.temp_sensor.value.temperature}}
                     </p>
                     <p ng-show="!vm.box.temp_sensor.value">
-                        TEMP
+                        LDG...
                     </p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-3 param">
                 <div class="inner">
-                    <p ng-show="vm.box.battery_sensor.value">
-                        {{vm.box.battery_sensor.value}}
+                    <p ng-show="vm.box.battery_sensor.value.percentage">
+                        {{vm.box.battery_sensor.value.percentage}}
                     </p>
-                    <p ng-show="!vm.box.battery_sensor.value">
-                        BATT
+                    <p ng-show="!vm.box.battery_sensor.value.percentage">
+                        LDG...
                     </p>
                 </div>
             </div>

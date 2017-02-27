@@ -139,7 +139,7 @@
             return $q.when(function() {
                 vm.mapMarkers.length = 0;
                 for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                    if (!!vm.filteredBoxes[i] && vm.filteredBoxes[i].gps_sensor) {
+                    if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
                         setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
                     }
                 }
