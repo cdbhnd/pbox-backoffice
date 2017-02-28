@@ -23,6 +23,8 @@
             this.gps_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'GPS') : null;
             this.temp_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'TEMPERATURE') : null;
             this.acc_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'ACCELEROMETER') : null;
+            this.battery_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'BATTERY') : null;
+
 
             this._listen_active = false;
             this._sensors = obj && obj.sensors ? obj.sensors : [];
@@ -67,6 +69,15 @@
                     ay: accelerometerValues[1],
                     az: accelerometerValues[2]
                 };
+            }
+            if (!!this.battery_sensor && this.battery_sensor.assetId == sensorId) {
+                console.log('Battery sensor updated');
+                console.log(value);
+                var batteryData = value.split(",");
+                this.battery_sensor.value = {
+                    percentage: batteryData[0],
+                    charging: batteryData[1]
+                }
             }
         }
 

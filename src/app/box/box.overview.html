@@ -1,9 +1,9 @@
-<div class="realtime" ng-controller="realtimeController as vm">
+<div class="overview" ng-controller="boxOverviewController as vm">
     <div class="container">
         <div class="row search-bar">
             <div class="col-md-3 col-sm-3 col-xs-12 search-field">
                 <span class="glyphicon glyphicon-search"></span>
-                <input type="text" placeholder="Search box by code..." ng-model="vm.filterQuery.code" ng-change="vm.filterBoxes()" ng-model-options="{ debounce: 1000 }">
+                <input type="text" placeholder="Search box by code..." ng-model="vm.filterQuery.code" ng-change="vm.filterBoxes()" ng-model-options="{ debounce: 800 }">
             </div>
             <div class="col-md-1 col-sm-2 col-xs-6 checkbox-field">
                 <input type="checkbox" name="status1" value="ACTIVE" ng-model="vm.filterQuery.activeStatus" ng-change="vm.filterBoxes()" ng-checked="vm.filterQuery.activeStatus"> Active
@@ -13,13 +13,16 @@
             </div>
             <div class="col-md-7 sm-hidden xs-hidden"></div>
         </div>
-        <div class="row overview">
+        <div class="row results">
             <div class="col-md-3 col-sm-3 col-xs-12 list">
-                <p ng-show="vm.noResults">BOX DOESN'T EXIST!</p>
+                <p ng-show="vm.noResults">NO RESULTS!</p>
+                <p ng-show="vm.loading">LOADING...</p>
                 <ul>
                     <li ng-repeat="box in vm.filteredBoxes">
-                        <img src="images/logo.png" alt="logo" width="40">
-                        <span>{{box.code}}</span>
+                        <a ui-sref="box-details({boxCode: '{{box.code}}'})">
+                            <img src="images/logo.png" alt="logo" width="40">
+                            <span>{{box.code}}</span>
+                        </a>
                     </li>
                 </ul>
             </div>
