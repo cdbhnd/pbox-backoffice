@@ -6,7 +6,7 @@
         .controller('boxOverviewController', boxOverviewController);
 
     /** @ngInject */
-    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, boxService) {
+    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, boxService, iotService) {
 
         var vm = this;
 
@@ -17,6 +17,7 @@
         var pollingPromise;
         var boxes = [];
         var filterInitialized = false;
+        var listening = false;
         vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
@@ -31,11 +32,15 @@
         /////////////////////////////////////
 
         (function activate() {
+            $scope.$on('$destroy', function() {
+                iotService.stopListenAll();
+            });
             startLoading()
                 // .then(pollBoxesStatus)
                 .then(getCurrentLocation)
                 .then(loadBoxes)
                 .then(filterBoxes)
+                .then(listenBoxes)
                 .then(loadMapMarkers)
                 // .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
@@ -135,16 +140,39 @@
             }());
         }
 
+        function listenBoxes() {
+            return $q.when(function() {
+                iotService.stopListenAll();
+                if ((!!vm.filteredBoxes && vm.filteredBoxes.length != 0) && !listening) {
+                    listening = true;
+                    var listeningBoxes = [];
+                    for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                        if (vm.filteredBoxes[i].status == 'ACTIVE') {
+                            listeningBoxes.push(vm.filteredBoxes[i]);
+                        }
+                    }
+                    iotService.listenAll(listeningBoxes);
+                } else {
+                    listening = false;
+                    iotService.stopListenAll();
+                }
+            }());
+        }
+
         function loadMapMarkers() {
             return $q.when(function() {
-                vm.mapMarkers.length = 0;
-                for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                    if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
-                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
-                    }
-                }
-                filterInitialized = true;
-            }());
+                    $scope.$watch('vm.filteredBoxes', function() {
+                        vm.mapMarkers.length = 0;
+                        for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                            if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
+                                setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
+                            }
+                        }
+                        filterInitialized = true;
+                    }, true);
+
+                }())
+                .then(listenBoxes);
         }
 
         function setMarkerProperties(geolocationObj) {

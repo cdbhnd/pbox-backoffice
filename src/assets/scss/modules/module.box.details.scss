@@ -34,7 +34,7 @@
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 955px) {
     .details {
         .container {
             .params {
@@ -42,6 +42,17 @@
                     .inner {
                         width: 100%;
                     }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 348px) {
+    .details {
+        .container {
+            .params {
+                .param {
                     .inner.gps {
                         line-height: 20px;
                     }
