@@ -20,6 +20,7 @@
         var listening = false;
         vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
+        vm.mapOptions.zoom = null;
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
         vm.filterQuery = {

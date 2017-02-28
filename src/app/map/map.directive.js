@@ -83,6 +83,7 @@
                             scope.map.setZoom(scope.mapOptions.zoom);
                         } else {
                             scope.map.fitBounds(bounds);
+                            scope.map.setZoom(14);
                         }
                     }, true);
                 }());
