@@ -6,7 +6,7 @@
         .controller('managementController', managementController);
 
 
-    function managementController(DTOptionsBuilder, DTColumnDefBuilder, realtimeService) {
+    function managementController(DTOptionsBuilder, DTColumnDefBuilder, boxService) {
         var vm = this;
 
         // properties 
@@ -29,7 +29,7 @@
         }());
 
         function loadBoxes() {
-           return realtimeService.getAllBoxes()
+           return boxService.getAllBoxes()
             .then(function(response) {
                 vm.boxes = response;
             });
