@@ -11,7 +11,7 @@
             },
             mapOptions: {
                 center: null,
-                zoom: 12,
+                zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControl: true,
                 zoomControlOptions: {

@@ -86,7 +86,7 @@
         function setMapOptions() {
             vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
             vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-            vm.mapOptions.mapCenter = vm.mapMarkers[0] ? vm.mapMarkers[0] : fallbackCoords;
+            vm.mapOptions.mapCenter = vm.mapOptions.mapCenter ? vm.mapMarkers[0] : fallbackCoords;
         }
 
         function cancelPollingPromiseOnScopeDestroy() {
