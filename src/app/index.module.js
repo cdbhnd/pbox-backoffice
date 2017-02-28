@@ -5,6 +5,7 @@
         .module('pbox', ['angularMoment',
             'ui.router',
             'ngStorage',
+            'ui.bootstrap',
             'pbox.api',
             'pbox.box',
             'pbox.map',
@@ -14,7 +15,8 @@
             'pbox.management',
             'pbox.auth',
             'pbox.iot',
-            'pbox.loader'
+            'pbox.loader',
+            'pbox.popup'
         ])
         .run(function($rootScope, $state, authService) {
             authService.init();

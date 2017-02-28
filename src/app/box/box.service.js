@@ -11,6 +11,7 @@
         service.getAllBoxes = getAllBoxes;
         service.getSingleBox = getSingleBox;
         service.getBoxStatus = getBoxStatus;
+        service.deleteBox = deleteBox;
 
         ///////////////////////////////////////////
 
@@ -57,6 +58,16 @@
                     return response;
                 })
                 .catch(function(e) {
+                    console.log(e);
+                });
+        }
+
+        function deleteBox(boxCode) {
+            return pboxApi.http({
+                    method: config.httpMethods.DELETE,
+                    url: config.pboxAPI.BOXES + '/' + boxCode 
+                })
+                .catch(function(e){
                     console.log(e);
                 });
         }
