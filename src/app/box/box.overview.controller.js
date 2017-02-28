@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('pbox.realtime')
-        .controller('realtimeController', realtimeController);
+        .module('pbox.box')
+        .controller('boxOverviewController', boxOverviewController);
 
     /** @ngInject */
-    function realtimeController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, realtimeService) {
+    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, boxService) {
 
         var vm = this;
 
@@ -17,7 +17,7 @@
         var pollingPromise;
         var boxes = [];
         var filterInitialized = false;
-        vm.loading;
+        vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
@@ -31,80 +31,22 @@
         /////////////////////////////////////
 
         (function activate() {
-            console.dir(vm);
             startLoading()
-                .then(pollBoxesStatus)
+                // .then(pollBoxesStatus)
                 .then(getCurrentLocation)
                 .then(loadBoxes)
                 .then(filterBoxes)
                 .then(loadMapMarkers)
-                .then(cancelPollingPromiseOnScopeDestroy)
+                // .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
         }());
 
         /////////////////////////////////////
 
-        function getCurrentLocation() {
-            return geolocationService.getCurrentLocation()
-                .then(function(coords) {
-                    vm.mapOptions.mapCenter = coords;
-                    return true;
-                });
-        }
-
-        function loadBoxes() {
-            return realtimeService.getAllBoxes()
-                .then(function(response) {
-                    if (response) {
-                        for (var i = 0; i < response.length; i++) {
-                            boxes.push(response[i]);
-                        }
-                        for (var i = 0; i < response.length; i++) {
-                            if (boxes[i].status != 'IDLE') {
-                                vm.blueprintFilteredBoxes.push(boxes[i]);
-                            }
-                        }
-                    } else {
-                        console.log('Job could not be found !');
-                    }
-                })
-                .catch(function(e) {
-                    console.log(e);
-                });
-        }
-
-        function loadMapMarkers() {
+        function startLoading() {
             return $q.when(function() {
-                vm.mapMarkers.length = 0;
-                for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                    if (!!vm.filteredBoxes[i] && vm.filteredBoxes[i].gps_sensor) {
-                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
-                    }
-                }
-                filterInitialized = true;
-            }());
-        }
-
-        function setMarkerProperties(geolocationObj) {
-            vm.mapMarkers.push({
-                latitude: parseFloat(geolocationObj.latitude),
-                longitude: parseFloat(geolocationObj.longitude)
+                vm.loading = true;
             });
-        }
-
-        function loadBoxesStatus() {
-            if (!vm.box) {
-                return true;
-            }
-
-            return realtimeService.getBoxStatus(vm.job.box)
-                .then(function(response) {
-                    vm.box.status = response.status;
-                    return true;
-                })
-                .catch(function(err) {
-                    console.log(err);
-                });
         }
 
         function pollBoxesStatus() {
@@ -116,27 +58,33 @@
             }());
         }
 
-        function cancelPollingPromiseOnScopeDestroy() {
-            return $q.when(function() {
-                $scope.$on('$destroy', function() {
-                    if (!!pollingPromise) {
-                        $interval.cancel(pollingPromise);
-                    }
+        function getCurrentLocation() {
+            return geolocationService.getCurrentLocation()
+                .then(function(coords) {
+                    vm.mapOptions.mapCenter = coords;
+                    return true;
                 });
-                return true;
-            }());
         }
 
-        function startLoading() {
-            return $q.when(function() {
-                vm.loading = true;
-            });
-        }
-
-        function stopLoading() {
-            return $q.when(function() {
-                vm.loading = false;
-            });
+        function loadBoxes() {
+            return boxService.getAllBoxes()
+                .then(function(response) {
+                    if (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            boxes.push(response[i]);
+                        }
+                        for (var i = 0; i < response.length; i++) {
+                            if (boxes[i].status != 'IDLE') {
+                                vm.blueprintFilteredBoxes.push(boxes[i]);
+                            }
+                        }
+                    } else {
+                        vm.noResults = true;
+                    }
+                })
+                .catch(function(e) {
+                    console.log(e);
+                });
         }
 
         function filterBoxes() {
@@ -185,6 +133,66 @@
                     loadMapMarkers();
                 }
             }());
+        }
+
+        function loadMapMarkers() {
+            return $q.when(function() {
+                vm.mapMarkers.length = 0;
+                for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                    if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
+                        setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
+                    }
+                }
+                filterInitialized = true;
+            }());
+        }
+
+        function setMarkerProperties(geolocationObj) {
+            vm.mapMarkers.push({
+                latitude: parseFloat(geolocationObj.latitude),
+                longitude: parseFloat(geolocationObj.longitude)
+            });
+        }
+
+        function cancelPollingPromiseOnScopeDestroy() {
+            return $q.when(function() {
+                $scope.$on('$destroy', function() {
+                    if (!!pollingPromise) {
+                        $interval.cancel(pollingPromise);
+                    }
+                });
+                return true;
+            }());
+        }
+
+        function stopLoading() {
+            return $q.when(function() {
+                vm.loading = false;
+            });
+        }
+
+        ////////////////////////////////////////////// helper function's
+
+        function loadBoxesStatus() {
+            if (!vm.blueprintFilteredBoxes) {
+                return true;
+            }
+            for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                if (!!vm.blueprintFilteredBoxes[i]) {
+                    startStatusPolling(vm.blueprintFilteredBoxes[i]);
+                }
+            }
+            return true;
+        }
+
+        function startStatusPolling(box) {
+            boxService.getBoxStatus(box.code)
+                .then(function(response) {
+                    box.status = response.status;
+                })
+                .catch(function(e) {
+                    console.log(e);
+                });
         }
     }
 })();

@@ -36,8 +36,6 @@
                     s.subscribe(box.topic, function(response) {
                         var data = JSON.parse(response.body);
                         box.setSensorValue(data.Id, data.Value);
-                        // run angular apply and digest process in 
-                        // order to new sensors values can be visible to other components in the app
                         if (!$rootScope.$$phase) {
                             $rootScope.$apply();
                         }
