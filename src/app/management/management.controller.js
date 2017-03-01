@@ -21,7 +21,7 @@
 
         //methods
         vm.deleteBox = deleteBox;
-        vm.reactivateBox = reactivateBox;
+        vm.toggleBoxActive = toggleBoxActive;
         vm.syncBox = syncBox;
 
         (function activate() {
@@ -50,8 +50,27 @@
                 });
         }
 
-        function reactivateBox(index) {
-            console.log('Reactivate box' + vm.boxes[index].deviceId);
+         function toggleBoxActive(index) {
+            var box = vm.boxes[index];
+            var setBoxStatus = null;
+
+            if(box.status == 'ACTIVE') {
+                setBoxStatus = 'IDLE';  
+            }else {
+                setBoxStatus = 'ACTIVE'
+            };
+
+            pboxPopup.confirm('Are you sure you want to set box state to ' + setBoxStatus + ' ?')
+                .then(function(confirmed) {
+                    if (confirmed) {
+                        boxService.setBoxStatus(box.code, setBoxStatus)
+                            .then(function(data) {
+                                loadBoxes();
+                            });
+                    } else {
+                        false;
+                    }
+                });
         }
 
         function syncBox(index) {
