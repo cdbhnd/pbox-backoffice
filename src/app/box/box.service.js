@@ -13,6 +13,7 @@
         service.getBoxStatus = getBoxStatus;
         service.deleteBox = deleteBox;
         service.syncBox = syncBox;
+        service.setBoxStatus = setBoxStatus;
 
         ///////////////////////////////////////////
 
@@ -77,6 +78,19 @@
              return pboxApi.http({
                     method: config.httpMethods.POST,
                     url: config.pboxAPI.BOXES + '/' + boxCode + '/sync'
+                })
+                .catch(function(e){
+                    console.log(e);
+                });
+        }
+
+         function setBoxStatus(boxCode, status) {
+             return pboxApi.http({
+                    method: config.httpMethods.POST,
+                    url: config.pboxAPI.BOXES + '/' + boxCode + '/status',
+                    data: {
+                        status: status
+                    }
                 })
                 .catch(function(e){
                     console.log(e);

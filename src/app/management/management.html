@@ -21,7 +21,7 @@
                         <td>{{ box.battery }}</td>
                         <td>{{ box.sensors[0].name }}</td>
                         <td>
-                            <button type="button" ng-click="vm.reactivateBox($index)" class="btn btn-info"><i class="glyphicon glyphicon-play-circle"></i></button>
+                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-info"><i class="glyphicon glyphicon-play-circle"></i></button>
                             <button type="button" ng-click="vm.syncBox($index)" class="btn btn-success"><i class="glyphicon glyphicon-refresh"></i></button>
                             <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
                         </td>
