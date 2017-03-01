@@ -1,0 +1,26 @@
+.modal-content {
+    background-color: $secondary_color;
+    border: 0px !important;
+    .modal-body {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        color: $primary_color;
+        background-color: $secondary_color;
+        text-align: center;
+    }
+    .modal-footer {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        background-color: $secondary_color;
+        text-align: center;
+        border-top-color: $secondary_color;
+        .button {
+            width: 50px;
+            display: inline-block;
+            margin-right: 34px;
+            color: $tertiary_color;
+            background-color: $primary_color;
+        }
+    }
+
+}
