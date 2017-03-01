@@ -55,7 +55,18 @@
         }
 
         function syncBox(index) {
-            console.log('Sync box' + vm.boxes[index].deviceId);
+            var box = vm.boxes[index].code;
+            pboxPopup.confirm('Are you sure you want to sync box sensors ?')
+                .then(function(confirmed) {
+                    if (confirmed) {
+                        boxService.syncBox(box)
+                            .then(function(data) {
+                                loadBoxes();
+                            });
+                    } else {
+                        false;
+                    }
+                });
         }
     }
 })();

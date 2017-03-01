@@ -12,6 +12,7 @@
         service.getSingleBox = getSingleBox;
         service.getBoxStatus = getBoxStatus;
         service.deleteBox = deleteBox;
+        service.syncBox = syncBox;
 
         ///////////////////////////////////////////
 
@@ -66,6 +67,16 @@
             return pboxApi.http({
                     method: config.httpMethods.DELETE,
                     url: config.pboxAPI.BOXES + '/' + boxCode 
+                })
+                .catch(function(e){
+                    console.log(e);
+                });
+        }
+
+        function syncBox(boxCode) {
+             return pboxApi.http({
+                    method: config.httpMethods.POST,
+                    url: config.pboxAPI.BOXES + '/' + boxCode + '/sync'
                 })
                 .catch(function(e){
                     console.log(e);
