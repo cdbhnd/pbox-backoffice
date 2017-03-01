@@ -6,7 +6,7 @@
         .controller('managementController', managementController);
 
 
-    function managementController(DTOptionsBuilder, DTColumnDefBuilder, boxService) {
+    function managementController(DTOptionsBuilder, DTColumnDefBuilder, boxService, pboxPopup) {
         var vm = this;
 
         // properties 
@@ -36,7 +36,18 @@
         }
 
         function deleteBox(index) {
-            console.log('Delete box' + vm.boxes[index].deviceId);
+            var box = vm.boxes[index].code;
+            pboxPopup.confirm('Are you sure you want to delete box ?')
+                .then(function(confirmed) {
+                    if (confirmed) {
+                        boxService.deleteBox(box)
+                            .then(function(data) {
+                                loadBoxes();
+                            });
+                    } else {
+                        false;
+                    }
+                });
         }
 
         function reactivateBox(index) {

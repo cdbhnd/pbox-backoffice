@@ -112,7 +112,9 @@
                 config.paths.node_modules + '/moment/min/moment.min.js',
                 config.paths.node_modules + '/angular-moment/angular-moment.min.js',
                 config.paths.node_modules + '/stompjs/lib/stomp.min.js',
-                config.paths.node_modules + '/bootstrap/dist/js/bootstrap.min.js'
+                config.paths.node_modules + '/bootstrap/dist/js/bootstrap.min.js',
+                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap.js',
+                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'
             ])
             .pipe(concatenate('libraries.js'))
             .pipe(rev())
