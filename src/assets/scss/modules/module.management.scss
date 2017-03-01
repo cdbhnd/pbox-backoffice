@@ -2,9 +2,13 @@
 
     .table-legend {
         margin-top: 20px;
-        img {
-            width: 4%;
+        .sensor-icon {
+            display: inline-block;
+            width: 46px;
             margin-right: 10px;
+            img {
+                width: 100%;
+            }
         }
         span {
             margin-right: 4px;
@@ -36,6 +40,9 @@
         td {
             border-right: 1px solid $secondary_color;
             text-align: center;
+            .button-sync-box {
+                background-color: #1a9c9b;
+            }
             .sensor-icon {
                 display: inline-block;
                 margin-right: 2px;
@@ -45,17 +52,29 @@
                 }
             }
         }
-
     }
 }
 
 //(min-width: 720px) and 
 
 @media (max-width: 720px) { 
-    .hide-720 {
-        display: none;
-    }
     .box-management {
-    
+        .hide-720 {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 992px) { 
+    .box-management {
+        table {
+            tr {
+                td {
+                    button {
+                        margin-bottom: 4px;
+                    }
+                }
+            }
+        }
     }
 }

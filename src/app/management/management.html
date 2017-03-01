@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-12 box-management">
             <div class="table-legend">
-                <img src="images/gps-icon.png" alt=""><span>gps sensor</span>
-                <img src="images/termo-icon.png" alt=""><span>temperature sensor</span>
-                <img src="images/accel-icon.png" alt=""><span>accelerometer sensor</span>
+                <span class="sensor-icon"><img src="images/gps-icon.png" alt=""></span><span>gps sensor</span>
+                <span class="sensor-icon"><img src="images/termo-icon.png" alt=""></span><span>temperature sensor</span>
+                <span class="sensor-icon"><img src="images/accel-icon.png" alt=""></span><span>accelerometer sensor</span>
             </div>
             <form class="form-inline" ng-submit="">
                 <table datatable="ng"  dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="row-border hover">
@@ -13,7 +13,7 @@
                         <th>Code</th>
                         <th class="hide-720">DeviceId</th>
                         <th>Status</th>
-                    <th>Battery</th>
+                        <th>Battery</th>
                         <th>Sensors</th>
                         <th>Actions</th>
                     </tr>
@@ -26,9 +26,9 @@
                         <td>{{ box.battery }}</td>
                         <td><span class="sensor-icon"><img ng-if="!!box.gps_sensor" src="images/gps-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.temp_sensor" src="images/termo-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.acc_sensor" src="images/accel-icon.png" alt=""></span></td>
                         <td>
-                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-info"><i class="glyphicon glyphicon-play-circle"></i></button>
-                            <button type="button" ng-click="vm.syncBox($index)" class="btn btn-success"><i class="glyphicon glyphicon-refresh"></i></button>
-                            <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-warning glyphicon glyphicon-play-circle"></button>
+                            <button type="button" ng-click="vm.syncBox($index)" class="btn button-sync-box glyphicon glyphicon-refresh"></button>
+                            <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger glyphicon glyphicon-trash"></button>
                         </td>
                     </tr>
                     </tbody>
@@ -36,5 +36,4 @@
             </form>
         </div>
     </div>
-    
 </div>

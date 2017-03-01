@@ -3,7 +3,9 @@
         <p>{{ctrl.message}}</p>
     </div>
     <div class="modal-footer">
-        <div class="button" ng-click="ctrl.yes()">Yes</div>
-        <div class="button" ng-click="ctrl.no()">No</div>
+        <div class="button-wraper">
+            <div class="button-left" ng-click="ctrl.yes()">Yes</div>
+            <div class="button-right" ng-click="ctrl.no()">No</div>
+        </div>
     </div>
 </div>

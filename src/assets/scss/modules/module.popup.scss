@@ -14,14 +14,30 @@
         background-color: $secondary_color;
         text-align: center;
         border-top-color: $secondary_color;
-        .button {
-            cursor: pointer;
-            width: 50px;
-            display: inline-block;
-            margin-right: 34px;
-            color: $tertiary_color;
-            background-color: $primary_color;
+        .button-wraper {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            .button-left {
+                position: absolute;
+                top: -9px;
+                left: 40px;
+                cursor: pointer;
+                width: 50px;
+                display: inline-block;
+                color: $tertiary_color;
+                background-color: $primary_color;
+            }
+            .button-right {
+                position: absolute;
+                top: -9px;
+                right: 40px;
+                cursor: pointer;
+                width: 50px;
+                display: inline-block;
+                color: $tertiary_color;
+                background-color: $primary_color;
+            }
         }
     }
-
 }

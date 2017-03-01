@@ -6,11 +6,15 @@
         .controller('managementController', managementController);
 
 
-    function managementController(DTOptionsBuilder, DTColumnDefBuilder, boxService, pboxPopup) {
+    function managementController(DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions,  boxService, pboxPopup) {
         var vm = this;
 
         // properties 
-        vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+        DTDefaultOptions.setOption('dom', 'lpfrtip');
+        vm.dtOptions = DTOptionsBuilder.newOptions()
+            .withPaginationType('full_numbers')
+            .withDOM('rt<"bottom"fp><"clear">');
+        
         vm.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),
