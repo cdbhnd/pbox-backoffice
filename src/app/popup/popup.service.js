@@ -10,11 +10,19 @@
 
         service.confirm = confirm;
 
-        function confirm() {
+        function confirm(message) {
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'app/popup/confirm.modal.html',
                 controller: 'confirmModalInstanceController as ctrl',
+                size: 'sm',
+                resolve: {
+                    options: function() {
+                        return {
+                            message: message
+                        };
+                    }
+                }
                
             });
 

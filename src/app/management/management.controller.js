@@ -37,7 +37,7 @@
 
         function deleteBox(index) {
             var box = vm.boxes[index].code;
-            pboxPopup.confirm()
+            pboxPopup.confirm('Are you sure you want to delete box ?')
                 .then(function(confirmed) {
                     if (confirmed) {
                         boxService.deleteBox(box)
