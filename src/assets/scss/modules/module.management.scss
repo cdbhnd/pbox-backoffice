@@ -11,7 +11,7 @@
                 color: $secondary_color;
             }
 
-            #DataTables_Table_0_filter {
+            .dataTables_filter {
                 margin-right: 0px!important;
             }
 
@@ -73,6 +73,7 @@
             border-right: 1px solid $secondary_color;
             text-align: center;
             .button-sync-box {
+                color: white;
                 background-color: #1a9c9b;
             }
             .sensor-icon {
