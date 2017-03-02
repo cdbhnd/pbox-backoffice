@@ -21,16 +21,16 @@
                         <td class="hide-420">{{ box.battery }}</td>
                         <td><span class="sensor-icon"><img ng-if="!!box.gps_sensor" src="images/gps-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.temp_sensor" src="images/termo-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.acc_sensor" src="images/accel-icon.png" alt=""></span></td>
                         <td>
-                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-warning glyphicon glyphicon-play-circle"></button>
+                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-warning glyphicon glyphicon-play-circle button-toggle-box"></button>
                             <button type="button" ng-click="vm.syncBox($index)" class="btn button-sync-box glyphicon glyphicon-refresh"></button>
-                            <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger glyphicon glyphicon-trash"></button>
+                            <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger glyphicon glyphicon-trash button-delete-box"></button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <div class="table-legend">
-                <div class="legend-item"><span class="sensor-icon"><img src="images/gps-icon.png" alt=""></span class="sensor-info"><span>gps sensor</span></div>
+                <div class="legend-item"><span class="sensor-icon"><img src="images/gps-icon.png" alt=""></span><span class="sensor-info"><span>gps sensor</span></div>
                 <div class="legend-item"><span class="sensor-icon"><img src="images/termo-icon.png" alt=""></span><span class="sensor-info">temperature sensor</span></div>
                 <div class="legend-item"><span class="sensor-icon"><img src="images/accel-icon.png" alt=""></span><span class="sensor-info">accelerometer sensor</span></div>
             </div>

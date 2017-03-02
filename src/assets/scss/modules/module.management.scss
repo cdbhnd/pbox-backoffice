@@ -10,7 +10,6 @@
                 top: 4px;
                 color: $secondary_color;
             }
-
             .dataTables_filter {
                 margin-right: 0px!important;
             }
@@ -74,7 +73,13 @@
             text-align: center;
             .button-sync-box {
                 color: white;
-                background-color: #1a9c9b;
+                background-color: #149a9a;
+            }
+            .button-toggle-box {
+                background-color: #f8c548;
+            }
+            .button-delete-box {
+                background-color: #f16768;
             }
             .sensor-icon {
                 display: inline-block;
