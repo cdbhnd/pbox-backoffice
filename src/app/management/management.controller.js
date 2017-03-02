@@ -13,8 +13,8 @@
         DTDefaultOptions.setOption('dom', 'lpfrtip');
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withPaginationType('full_numbers')
-            .withDOM('rt<"bottom"fp><"clear">');
-        
+            .withDOM('<"top" <"glyphicon glyphicon-search search-icon">f>rt<"bottom"p><"clear">');
+            
         vm.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),
