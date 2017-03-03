@@ -6,7 +6,7 @@
         .controller('boxOverviewController', boxOverviewController);
 
     /** @ngInject */
-    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, boxService, iotService) {
+    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, GeolocationModel, boxService, iotService) {
 
         var vm = this;
 
@@ -18,9 +18,10 @@
         var boxes = [];
         var filterInitialized = false;
         var listening = false;
+        var fallbackCoords = new GeolocationModel();
         vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
-        vm.mapOptions.zoom = null;
+        // vm.mapOptions.zoom = null;
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
         vm.filterQuery = {
@@ -43,6 +44,7 @@
                 .then(filterBoxes)
                 .then(listenBoxes)
                 .then(loadMapMarkers)
+                .then(setMapOptions)
                 // .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
         }());
@@ -174,6 +176,10 @@
 
                 }())
                 .then(listenBoxes);
+        }
+
+        function setMapOptions() {
+            vm.mapOptions.mapCenter = vm.mapOptions.mapCenter ? vm.mapMarkers[0] : fallbackCoords;
         }
 
         function setMarkerProperties(geolocationObj) {
