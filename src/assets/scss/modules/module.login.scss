@@ -41,6 +41,11 @@
             text-align: center;
             padding: 8px;
             background-color: $yellow;
+            border-bottom: none;
         }
+        .invalid {
+            border-bottom: 1px solid $red;
+            box-shadow: 0 4px 2px -2px gray; 
+        } 
     }
 }

@@ -13,7 +13,7 @@
         vm.user = new UserModel();
 
         vm.loginUser = loginUser;
-
+        vm.submitForm = submitForm;
         /////////////////////////////////////
 
         (function activate() {
@@ -21,6 +21,11 @@
         }());
 
         /////////////////////////////////////
+        function submitForm(isValid) {
+            if(!!isValid) {
+                loginUser();
+            };
+        }
 
         function loginUser() {
             if (vm.user.username && vm.user.password) {
