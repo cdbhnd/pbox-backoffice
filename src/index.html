@@ -21,7 +21,7 @@
 </head>
 
 <body ng-app="pbox">
-    <header class="clearfix" ng-include="'app/header/header.html'"></header>
+    <header class="clearfix" ng-include="'app/header/header.html'" ng-hide="!!current_state.data && current_state.data.hideHeader ? current_state.data.hideHeader: false"></header>
     <div ui-view></div>
 </body>
 

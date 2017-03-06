@@ -8,7 +8,8 @@
             $stateProvider
                 .state('login', {
                     url: '',
-                    templateUrl: 'app/auth/auth.login.html'
+                    templateUrl: 'app/auth/auth.login.html',
+                    data: {hideHeader: true}
                 })
                 .state('boxes-overview', {
                     url: '/boxes-overview',
