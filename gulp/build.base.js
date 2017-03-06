@@ -114,7 +114,8 @@
                 config.paths.node_modules + '/stompjs/lib/stomp.min.js',
                 config.paths.node_modules + '/bootstrap/dist/js/bootstrap.min.js',
                 config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap.js',
-                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'
+                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+                config.paths.node_modules + '/ng-notify/dist/ng-notify.min.js'
             ])
             .pipe(concatenate('libraries.js'))
             .pipe(rev())
@@ -146,7 +147,8 @@
         return gulp.src([
                 config.paths.src + '/assets/scss/index.scss',
                 config.paths.node_modules + '/bootstrap/dist/css/bootstrap.min.css',
-                config.paths.node_modules + '/bootstrap/dist/js/bootstrap-theme.min.css'
+                config.paths.node_modules + '/bootstrap/dist/js/bootstrap-theme.min.css',
+                config.paths.node_modules + '/ng-notify/dist/ng-notify.min.css'
             ])
             .pipe(sass().on('error', sass.logError))
             .pipe(concatenate('styles.css'))

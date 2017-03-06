@@ -1,5 +1,5 @@
 <div class="login" ng-controller="authController as vm">
-    <div class="login-form">
+    <form class="login-form" name"loginForm">
         <div class="image">
             <img src="images/logo.png" alt="logo">
         </div>
@@ -7,9 +7,10 @@
             <h1>PBox</h1>
         </div>
         <div class="list">
-            <input type="text" placeholder="Username" ng-model="vm.user.username">
-            <input type="password" placeholder="Password" ng-model="vm.user.password">
+            <input type="text" name="usernameField" placeholder="Username" ng-model="vm.user.username" required>
+            <input type="password" name="passwordField" placeholder="Password" ng-model="vm.user.password" required>
         </div>
         <div class="submit-button" ng-click="vm.loginUser()">Log In</div>
-    </div>
+        <h1>{{loginForm.usernameField.$valid}}</h1>
+    </form>
 </div>
