@@ -24,6 +24,7 @@
             this.temp_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'TEMPERATURE') : null;
             this.acc_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'ACCELEROMETER') : null;
             this.battery_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'BATTERY') : null;
+            this.vibration_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'VIBRATION') : null;
 
 
             this._listen_active = false;
@@ -78,6 +79,11 @@
                     percentage: batteryData[0],
                     charging: batteryData[1]
                 }
+            }
+            if (!!this.vibration_sensor && this.vibration_sensor.assetId == sensorId) {
+                console.log('Vibration sensor updated');
+                console.log(value);
+                this.vibration_sensor.value = parseInt(value);
             }
         }
 

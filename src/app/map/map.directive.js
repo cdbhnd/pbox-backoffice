@@ -103,7 +103,6 @@
             function buildMarker(latitude, longitude, map, label) {
                 markers.push(new google.maps.Marker({
                     map: map,
-                    animation: google.maps.Animation.DROP,
                     position: new google.maps.LatLng(latitude, longitude),
                     label: label,
                     icon: markerIcon
