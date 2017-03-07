@@ -2,37 +2,37 @@
     <div class="row">
         <div class="col-md-12 box-management">
             <form class="form-inline" ng-submit="">
-                <table datatable="ng"  dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="row-border hover">
+                <table datatable="ng" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="row-border hover">
                     <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th class="hide-720">DeviceId</th>
-                        <th>Status</th>
-                        <th class="hide-420">Battery</th>
-                        <th>Sensors</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>Code</th>
+                            <th class="hide-720">DeviceId</th>
+                            <th>Status</th>
+                            <th class="hide-420">Battery</th>
+                            <th>Sensors</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="box in vm.boxes">
-                        <td>{{ box.code }}</td>
-                        <td class="hide-720">{{ box.deviceId }}</td>
-                        <td>{{ box.status }}</td>
-                        <td class="hide-420">{{ box.battery_sensor.value.split(',')[0] }}</td>
-                        <td><span class="sensor-icon"><img ng-if="!!box.gps_sensor" src="images/gps-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.temp_sensor" src="images/termo-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.acc_sensor" src="images/accel-icon.png" alt=""></span></td>
-                        <td>
-                            <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-warning glyphicon glyphicon-play-circle button-toggle-box"></button>
-                            <button type="button" ng-click="vm.syncBox($index)" class="btn button-sync-box glyphicon glyphicon-refresh"></button>
-                            <button type="button" ng-if="box.status!='ACTIVE'"ng-click="vm.deleteBox($index)" class="btn btn-danger glyphicon glyphicon-trash button-delete-box"></button>
-                        </td>
-                    </tr>
+                        <tr ng-repeat="box in vm.boxes">
+                            <td>{{ box.code }}</td>
+                            <td class="hide-720">{{ box.deviceId }}</td>
+                            <td>{{ box.status }}</td>
+                            <td class="hide-420">{{ box.battery_sensor.value.split(',')[0] }}</td>
+                            <td><span class="sensor-icon"><img ng-if="!!box.gps_sensor" src="images/gps-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.temp_sensor" src="images/termo-icon.png" alt=""></span><span class="sensor-icon"><img ng-if="!!box.acc_sensor" src="images/accel-icon.png" alt=""></span></td>
+                            <td>
+                                <button type="button" ng-click="vm.toggleBoxActive($index)" class="btn btn-warning glyphicon glyphicon-play-circle button-toggle-box"></button>
+                                <button type="button" ng-click="vm.syncBox($index)" class="btn button-sync-box glyphicon glyphicon-refresh"></button>
+                                <button type="button" ng-if="box.status!='ACTIVE'" ng-click="vm.deleteBox($index)" class="btn btn-danger glyphicon glyphicon-trash button-delete-box"></button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </form>
             <div class="table-legend">
                 <div class="legend-item"><span class="sensor-icon"><img src="images/gps-icon.png" alt=""></span><span class="sensor-info"><span>gps sensor</span></div>
                 <div class="legend-item"><span class="sensor-icon"><img src="images/termo-icon.png" alt=""></span><span class="sensor-info">temperature sensor</span></div>
-                <div class="legend-item"><span class="sensor-icon"><img src="images/accel-icon.png" alt=""></span><span class="sensor-info">accelerometer sensor</span></div>
+                <div class="legend-item"><span class="sensor-icon"><img src="images/accel-icon.png" alt=""></span><span class="sensor-info">vibration sensor</span></div>
             </div>
         </div>
     </div>
