@@ -6,14 +6,14 @@
         .controller('authController', authController);
 
     /** @ngInject */
-    function authController($state, $q, authService, UserModel) {
+    function authController($state, $q, authService, UserModel, ngNotify) {
 
         var vm = this;
 
         vm.user = new UserModel();
 
         vm.loginUser = loginUser;
-
+        vm.submitForm = submitForm;
         /////////////////////////////////////
 
         (function activate() {
@@ -21,6 +21,11 @@
         }());
 
         /////////////////////////////////////
+        function submitForm(isValid) {
+            if(!!isValid) {
+                loginUser();
+            };
+        }
 
         function loginUser() {
             if (vm.user.username && vm.user.password) {
@@ -30,16 +35,16 @@
                     })
                     .catch(function(e) {
                         if (e.status === 401) {
-                            console.log('Wrong username or password!');
+                            ngNotify.set('Wrong username or password!', 'error');
                         }
                         if (e.status === 500) {
-                            console.log('Something went wrong, please try leater!');
+                            ngNotify.set('Something went wrong, please try leater!', 'info');
                         }
                     })
                     .finally(function() {});
             } else {
                 if (!vm.user.username || !vm.user.password) {
-                    console.log('Username or password is missing!');
+                    ngNotify.set('Username or password is missing!', 'error');
                 }
             }
         }

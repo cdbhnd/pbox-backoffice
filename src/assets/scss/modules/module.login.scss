@@ -1,0 +1,51 @@
+.login {
+    overflow: auto;
+    background-color: $login_background_color;
+    position: absolute; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    .login-form {
+        width:172px;
+        margin: 100px auto;
+        .title {
+            display: block;
+            h1{
+                display: block;
+                text-align: center;
+                color: $primary_color;
+            }
+        }
+        input {
+            display: block;
+            width: 172px;
+            margin-bottom: 2px;
+            border: 0px;
+            border-bottom: 0.5px solid $primary_color;
+            text-align: left;
+            background-color: $login_background_color;
+            color: $primary_color;
+            padding-left: 8px;
+        }
+        input:nth-child(2) {
+            margin-bottom: 43px;
+        }
+        input:focus{
+            outline: none;
+        }
+        .submit-button {
+            width: 172px;
+            height: 35px;
+            color: $primary_color;
+            text-align: center;
+            padding: 8px;
+            background-color: $yellow;
+            border-bottom: none;
+        }
+        .invalid {
+            border-bottom: 1px solid $red;
+            box-shadow: 0 4px 2px -2px gray; 
+        } 
+    }
+}

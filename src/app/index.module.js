@@ -2,7 +2,8 @@
     'use strict';
 
     angular
-        .module('pbox', ['angularMoment',
+        .module('pbox', ['angularMoment', 
+            'ngNotify',
             'ui.router',
             'ngStorage',
             'ui.bootstrap',

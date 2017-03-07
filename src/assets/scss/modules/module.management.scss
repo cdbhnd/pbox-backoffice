@@ -72,14 +72,14 @@
             border-right: 1px solid $secondary_color;
             text-align: center;
             .button-sync-box {
-                color: white;
-                background-color: #149a9a;
+                color: $primary_color;
+                background-color: $green;
             }
             .button-toggle-box {
-                background-color: #f8c548;
+                background-color: $yellow;
             }
             .button-delete-box {
-                background-color: #f16768;
+                background-color: $red;
             }
             .sensor-icon {
                 display: inline-block;

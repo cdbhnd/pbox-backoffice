@@ -1,12 +1,17 @@
+@import "_variables",
+"_mixins",
+"modules/_modules.list.scss",
+"modules/module.popup.scss",
+"modules/module.management.scss",
+"modules/module.login.scss";
+
 html,
 body {
     height: 100% !important;
     margin: 0 !important;
     font-family: 'Exo', sans-serif !important;
-}
 
-@import "_variables",
-"_mixins",
-"modules/_modules.list.scss",
-"modules/module.popup.scss",
-"modules/module.management.scss";
+    .ngn {
+        background-color: $red;
+    }
+}
