@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row params">
-            <div class="col-md-4 col-sm-4 col-xs-6 param">
+            <div class="col-md-3 col-sm-3 col-xs-6 param">
                 <div class="inner gps">
                     <p ng-show="vm.box.gps_sensor.value">
                         {{vm.box.gps_sensor.value.latitude}}, {{vm.box.gps_sensor.value.longitude}}
@@ -16,7 +16,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-3 param">
+            <div class="col-md-3 col-sm-3 col-xs-2 param">
                 <div class="inner">
                     <p ng-show="vm.box.temp_sensor.value">
                         {{vm.box.temp_sensor.value.temperature}}
@@ -26,13 +26,23 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-3 param">
+            <div class="col-md-3 col-sm-3 col-xs-2 param">
                 <div class="inner">
                     <p ng-show="vm.box.battery_sensor.value.percentage">
                         {{vm.box.battery_sensor.value.percentage}}
                     </p>
                     <p ng-show="!vm.box.battery_sensor.value.percentage">
                         LDG...
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-2 param">
+                <div class="inner">
+                    <p ng-show="vm.box.vibration_sensor.value">
+                        SHAKE
+                    </p>
+                    <p ng-show="!vm.box.vibration_sensor.value">
+                        STILL
                     </p>
                 </div>
             </div>
