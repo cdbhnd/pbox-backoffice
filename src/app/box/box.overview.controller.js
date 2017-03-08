@@ -124,9 +124,11 @@
 
                 if (!!query.code && query.code != '') {
                     var helper = angular.copy(vm.filteredBoxes);
+                    var searchQuery = query.code.toLowerCase();
                     vm.filteredBoxes.length = 0;
                     for (var i = 0; i < helper.length; i++) {
-                        if (helper[i].code == query.code) {
+                        var box = helper[i].code.toLowerCase();
+                        if (box.includes(searchQuery)) {
                             vm.filteredBoxes.push(helper[i]);
                         }
                     }
