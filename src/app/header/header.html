@@ -3,7 +3,7 @@
         <div class="col-md-1 col-sm-2 col-xs-3 logo">
             <img src="images/logo.png" alt="logo" width="50">
         </div>
-        <div class="col-md-10 col-sm-8 col-xs-6 title">
+        <div class="col-md-10 col-sm-8 col-xs-3 title">
             <h1>PBox</h1>
         </div>
         <div class="col-md-1 col-sm-2 col-xs-3 menu">
@@ -16,6 +16,9 @@
             <li ng-click="vm.changeState('management')"><a>Box Management</a></li>
             <li ng-click="vm.changeState('boxes-overview')"><a>Real time tracking</a></li>
             <li ng-click="vm.changeState('history')"><a>History</a></li>
+            <li class="last" ng-controller="authController as auth">
+                <a ng-click="auth.logout()">Log Out</a>
+            </li>
         </ul>
     </div>
 </div>
