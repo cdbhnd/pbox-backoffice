@@ -18,7 +18,7 @@
         var boxes = [];
         var filterInitialized = false;
         var listening = false;
-        var fallbackCoords = new GeolocationModel();
+        var center = null;
         vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         // vm.mapOptions.zoom = null;
@@ -69,7 +69,8 @@
         function getCurrentLocation() {
             return geolocationService.getCurrentLocation()
                 .then(function(coords) {
-                    vm.mapOptions.mapCenter = coords;
+                    center = coords;
+                    vm.mapOptions.mapCenter = center;
                     return true;
                 });
         }
@@ -181,7 +182,7 @@
         }
 
         function setMapOptions() {
-            vm.mapOptions.mapCenter = vm.mapOptions.mapCenter ? vm.mapMarkers[0] : fallbackCoords;
+            vm.mapOptions.mapCenter = vm.mapMarkers ? vm.mapMarkers[0] : center;
         }
 
         function setMarkerProperties(geolocationObj) {

@@ -29,7 +29,10 @@
                         deferred.resolve(coords);
                     },
                     function(err) {
-                        deferred.reject(err);
+                        var fallbackCoords = new GeolocationModel();
+                        fallbackCoords.latitude = 44.811155;
+                        fallbackCoords.longitude = 20.446182;
+                        deferred.resolve(fallbackCoords);
                     });
             }
 
