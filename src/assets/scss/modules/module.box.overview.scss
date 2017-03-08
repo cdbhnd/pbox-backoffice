@@ -39,6 +39,11 @@
             .list {
                 z-index: 6;
                 padding: $search_bar_height 0 0;
+                .no-results {
+                    text-align: center;
+                    padding-top: 30px;
+                    font-size: 20px;
+                }
                 ul {
                     list-style-type: none;
                     padding: 0;
