@@ -44,7 +44,7 @@
                     data: {
                         username: username,
                         password: password,
-                        type: 3
+                        type: 4
                     }
                 })
                 .then(function(data) {
