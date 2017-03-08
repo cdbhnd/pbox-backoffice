@@ -9,14 +9,14 @@
                 .state('login', {
                     url: '',
                     templateUrl: 'app/auth/auth.login.html',
-                    data: {hideHeader: true}
+                    data: { hideHeader: true }
                 })
                 .state('boxes-overview', {
                     url: '/boxes-overview',
                     templateUrl: 'app/box/box.overview.html'
                 })
                 .state('box-details', {
-                    url: '/boxes-overview/box-details/{boxCode}',
+                    url: '/boxes-overview/{boxCode}',
                     templateUrl: 'app/box/box.details.html',
                     data: {
                         showBackButton: true

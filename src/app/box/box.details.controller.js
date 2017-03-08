@@ -78,15 +78,18 @@
                 $scope.$watch('vm.box.gps_sensor.value', function() {
                     if (!!vm.box.gps_sensor && vm.box.gps_sensor.value) {
                         setMarkerProperties(vm.box.gps_sensor.value);
+                        setMapOptions();
                     }
                 }, true);
             }());
         }
 
         function setMapOptions() {
-            vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-            vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
-            vm.mapOptions.mapCenter = vm.mapOptions.mapCenter ? vm.mapMarkers[0] : fallbackCoords;
+            return $q.when(function() {
+                vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
+                vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
+                vm.mapOptions.mapCenter = vm.mapMarkers[0] ? vm.mapMarkers[0] : fallbackCoords;
+            }());
         }
 
         function cancelPollingPromiseOnScopeDestroy() {
