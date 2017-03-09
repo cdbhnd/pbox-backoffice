@@ -9,6 +9,11 @@
     .login-form {
         width:172px;
         margin: 100px auto;
+        .image {
+            img {
+                width: 100%;
+            }
+        }
         .title {
             display: block;
             h1{
@@ -23,10 +28,9 @@
             margin-bottom: 2px;
             border: 0px;
             border-bottom: 0.5px solid $primary_color;
-            text-align: left;
+            text-align: center;
             background-color: $login_background_color;
             color: $primary_color;
-            padding-left: 8px;
         }
         input:nth-child(2) {
             margin-bottom: 43px;
