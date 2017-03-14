@@ -9,7 +9,9 @@
                 .state('login', {
                     url: '',
                     templateUrl: 'app/auth/auth.login.html',
-                    data: { hideHeader: true }
+                    data: {
+                        hideHeader: true
+                    }
                 })
                 .state('boxes-overview', {
                     url: '/boxes-overview',
