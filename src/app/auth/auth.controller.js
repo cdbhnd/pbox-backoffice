@@ -10,10 +10,14 @@
 
         var vm = this;
 
-        vm.user = new UserModel();
-
+        // public methods
         vm.loginUser = loginUser;
         vm.submitForm = submitForm;
+        vm.logout = logoutUser;
+
+        //variables and properties
+        vm.user = new UserModel();
+
         /////////////////////////////////////
 
         (function activate() {
@@ -21,10 +25,18 @@
         }());
 
         /////////////////////////////////////
-        function submitForm(isValid) {
-            if(!!isValid) {
-                loginUser();
-            };
+
+        function checkIfUserAlreadyLogedIn() {
+            return $q.when(function() {
+                return authService.currentUser()
+                    .then(function(user) {
+                        if (!!user) {
+                            $state.go('boxes-overview');
+                            return false;
+                        }
+                        return true;
+                    });
+            }());
         }
 
         function loginUser() {
@@ -49,23 +61,25 @@
             }
         }
 
-        ////////////////////////////////////////////////////
+        function submitForm(isValid) {
+            if (!!isValid) {
+                loginUser();
+            };
+        }
 
-        function checkIfUserAlreadyLogedIn() {
+        function logoutUser() {
+            return authService.logout()
+                .then(redirectToLogin);
+        }
+
+        function redirectToLogin() {
             return $q.when(function() {
-                return authService.currentUser()
-                    .then(function(user) {
-                        if (!!user) {
-                            $state.go('boxes-overview');
-                            return false;
-                        }
-                        return true;
-                    });
+                $state.go('login');
             }());
         }
 
         function login() {
-            return authService.login(vm.user.username, vm.user.password)
+            return authService.login(vm.user.username, vm.user.password);
         }
     }
 })();
