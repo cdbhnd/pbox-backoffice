@@ -71,9 +71,9 @@
 
         function loadMapMarker() {
             return $q.when(function () {
-                $scope.$watch('vm.box.gps_sensor.value', function () {
-                    if (!!vm.box.gps_sensor && vm.box.gps_sensor.value) {
-                        setMarkerProperties(vm.box.gps_sensor.value);
+                $scope.$watch('vm.box.gpsSensor.value', function () {
+                    if (!!vm.box.gpsSensor && vm.box.gpsSensor.value) {
+                        setMarkerProperties(vm.box.gpsSensor.value);
                         setMapOptions();
                     }
                 }, true);
@@ -116,9 +116,6 @@
                 .then(function (response) {
                     vm.box.status = response.status;
                     return true;
-                })
-                .catch(function (e) {
-                    console.log(e);
                 });
         }
 

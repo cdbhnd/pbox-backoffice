@@ -4,7 +4,7 @@
         .controller('authController', authController);
 
     /**@ngInject */
-    function authController($state, $q, authService, UserModel, ngNotify) {
+    function authController($state, $q, authService, UserModel, notifyService) {
         var vm = this;
 
         //public methods
@@ -45,15 +45,15 @@
                     })
                     .catch(function (e) {
                         if (e.status === 401) {
-                            ngNotify.set('Wrong username or password!', 'error');
+                            notifyService.warn('Wrong username or password!');
                         }
                         if (e.status === 500) {
-                            ngNotify.set('Something went wrong, please try leater!', 'info');
+                            notifyService.error('Something went wrong, please try leater!');
                         }
                     });
             } else {
                 if (!vm.user.username || !vm.user.password) {
-                    ngNotify.set('Username or password is missing!', 'error');
+                    notifyService.warn('Username or password is missing!');
                 }
             }
         }

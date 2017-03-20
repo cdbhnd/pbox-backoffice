@@ -1,7 +1,6 @@
 (function (angular) {
     angular
         .module('pbox', ['angularMoment',
-            'ngNotify',
             'ui.router',
             'ngStorage',
             'ui.bootstrap',
@@ -14,7 +13,8 @@
             'pbox.management',
             'pbox.auth',
             'pbox.iot',
-            'pbox.popup'
+            'pbox.popup',
+            'pbox.notify'
         ])
         .run(function ($rootScope, $state, authService) {
             authService.init();

@@ -12,7 +12,7 @@
         function confirm(message) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'app/popup/confirm.modal.html',
+                templateUrl: 'app/popup/popup.confirm.modal.html',
                 controller: 'confirmModalInstanceController as ctrl',
                 size: 'sm',
                 resolve: {

@@ -5,9 +5,8 @@
 
     /**@ngInject */
     function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService,
-        GeolocationModel, boxService, iotService) {
+        GeolocationModel, boxService, iotService, BoxFilterModel) {
         var vm = this;
-        var boxes = [];
         var filterInitialized = false;
         var listening = false;
         var center = null;
@@ -16,11 +15,7 @@
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
-        vm.filterQuery = {
-            code: null,
-            activeStatus: true,
-            sleepStatus: false
-        };
+        vm.filterQuery = new BoxFilterModel();
         vm.blueprintFilteredBoxes = [];
         vm.noResults = false;
 
@@ -31,7 +26,7 @@
         /**Activate */
         (function () {
             $scope.$on('$destroy', function () {
-                iotService.stopListenAll();
+                iotService.stopListenAllBoxes();
             });
             startLoading()
                 .then(getCurrentLocation)
@@ -65,76 +60,35 @@
                 .then(function (response) {
                     if (response) {
                         for (var i = 0; i < response.length; i++) {
-                            boxes.push(response[i]);
-                        }
-                        for (i = 0; i < response.length; i++) {
-                            if (boxes[i].status !== 'IDLE') {
-                                vm.blueprintFilteredBoxes.push(boxes[i]);
+                            if (response[i].status !== 'IDLE') {
+                                vm.blueprintFilteredBoxes.push(response[i]);
                             }
                         }
                     } else {
                         vm.noResults = true;
                     }
-                })
-                .catch(function (e) {
-                    console.log(e);
                 });
         }
 
         function filterBoxes() {
             return $q.when(function () {
-                var query = vm.filterQuery;
-
                 vm.filteredBoxes.length = 0;
-                var i;
-
-                if (!query.activeStatus && query.sleepStatus) {
-                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                        if (vm.blueprintFilteredBoxes[i].status === 'SLEEP') {
-                            vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
-                        }
-                    }
-                } else if (query.activeStatus && !query.sleepStatus) {
-                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                        if (vm.blueprintFilteredBoxes[i].status === 'ACTIVE') {
-                            vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
-                        }
-                    }
-                } else if (!query.activeStatus && !query.sleepStatus) {
-                    vm.filteredBoxes.length = 0;
-                } else {
-                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                    if (vm.filterQuery.match(vm.blueprintFilteredBoxes[i])) {
                         vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
                     }
                 }
-
-                if (!!query.code && query.code !== '') {
-                    var helper = angular.copy(vm.filteredBoxes);
-                    var searchQuery = query.code.toLowerCase();
-                    vm.filteredBoxes.length = 0;
-                    for (i = 0; i < helper.length; i++) {
-                        var box = helper[i].code.toLowerCase();
-                        if (box.includes(searchQuery)) {
-                            vm.filteredBoxes.push(helper[i]);
-                        }
-                    }
-                }
-
-                if (vm.filteredBoxes.length === 0) {
-                    vm.noResults = true;
-                } else {
-                    vm.noResults = false;
-                }
-
+                vm.noResults = !vm.filteredBoxes.length;
                 if (filterInitialized) {
                     loadMapMarkers();
                 }
+                return vm.filteredBoxes;
             }());
         }
 
         function listenBoxes() {
             return $q.when(function () {
-                iotService.stopListenAll();
+                iotService.stopListenAllBoxes();
                 if ((!!vm.filteredBoxes && vm.filteredBoxes.length !== 0) && !listening) {
                     listening = true;
                     var listeningBoxes = [];
@@ -143,10 +97,10 @@
                             listeningBoxes.push(vm.filteredBoxes[i]);
                         }
                     }
-                    iotService.listenAll(listeningBoxes);
+                    iotService.listenAllBoxes(listeningBoxes);
                 } else {
                     listening = false;
-                    iotService.stopListenAll();
+                    iotService.stopListenAllBoxes();
                 }
             }());
         }
@@ -156,8 +110,8 @@
                 $scope.$watch('vm.filteredBoxes', function () {
                     vm.mapMarkers.length = 0;
                     for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                        if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
-                            setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
+                        if (!!vm.filteredBoxes[i].gpsSensor && vm.filteredBoxes[i].gpsSensor.value) {
+                            setMarkerProperties(vm.filteredBoxes[i].gpsSensor.value);
                         }
                     }
                     filterInitialized = true;

@@ -4,15 +4,15 @@
         .service('iotService', iotService);
 
     /**@ngInject */
-    function iotService($rootScope, $window) {
+    function iotService($rootScope, $window, config) {
         var service = this;
-        var host = 'https://api.allthingstalk.io:15671/stomp';
+        var host = config.att.STOMP_HOST;
         var listeners = {};
 
-        service.listen = listenBox;
-        service.listenAll = listenAll;
-        service.stopListen = stopListenBox;
-        service.stopListenAll = stopListenAll;
+        service.listenBox = listenBox;
+        service.listenAllBoxes = listenAllBoxes;
+        service.stopListenBox = stopListenBox;
+        service.stopListenAllBoxes = stopListenAllBoxes;
 
         //////////////////////////////////////
 
@@ -47,7 +47,7 @@
             }
         }
 
-        function listenAll(boxes) {
+        function listenAllBoxes(boxes) {
             if (!!boxes && !boxes.length) {
                 return false;
             }
@@ -92,7 +92,7 @@
             }
         }
 
-        function stopListenAll() {
+        function stopListenAllBoxes() {
             for (var i in listeners) {
                 if (listeners.hasOwnProperty(i)) {
                     stopListenBox(i);
