@@ -1,20 +1,17 @@
-(function () {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.management')
         .controller('managementController', managementController);
 
 
-    function managementController(DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions,  boxService, pboxPopup) {
+    function managementController(DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, boxService, pboxPopup) {
         var vm = this;
 
-        // properties 
+        //properties
         DTDefaultOptions.setOption('dom', 'lpfrtip');
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withPaginationType('full_numbers')
             .withDOM('<"top" <"glyphicon glyphicon-search search-icon">f>rt<"bottom"p><"clear">');
-            
         vm.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),
@@ -28,13 +25,18 @@
         vm.toggleBoxActive = toggleBoxActive;
         vm.syncBox = syncBox;
 
-        (function activate() {
-             loadBoxes();
+        //////////////////////////////////////////
+
+        /**Activate */
+        (function () {
+            loadBoxes();
         }());
 
+        //////////////////////////////////////////
+
         function loadBoxes() {
-           return boxService.getAllBoxes()
-            .then(function(response) {
+            return boxService.getAllBoxes()
+            .then(function (response) {
                 vm.boxes = response;
             });
         }
@@ -42,37 +44,33 @@
         function deleteBox(index) {
             var box = vm.boxes[index].code;
             pboxPopup.confirm('Are you sure you want to delete box ?')
-                .then(function(confirmed) {
+                .then(function (confirmed) {
                     if (confirmed) {
                         boxService.deleteBox(box)
-                            .then(function(data) {
+                            .then(function () {
                                 loadBoxes();
                             });
-                    } else {
-                        false;
                     }
                 });
         }
 
-         function toggleBoxActive(index) {
+        function toggleBoxActive(index) {
             var box = vm.boxes[index];
             var setBoxStatus = null;
 
-            if(box.status == 'ACTIVE') {
-                setBoxStatus = 'IDLE';  
+            if(box.status === 'ACTIVE') {
+                setBoxStatus = 'IDLE';
             }else {
-                setBoxStatus = 'ACTIVE'
-            };
+                setBoxStatus = 'ACTIVE';
+            }
 
             pboxPopup.confirm('Are you sure you want to set box state to ' + setBoxStatus + ' ?')
-                .then(function(confirmed) {
+                .then(function (confirmed) {
                     if (confirmed) {
                         boxService.setBoxStatus(box.code, setBoxStatus)
-                            .then(function(data) {
+                            .then(function () {
                                 loadBoxes();
                             });
-                    } else {
-                        false;
                     }
                 });
         }
@@ -80,16 +78,14 @@
         function syncBox(index) {
             var box = vm.boxes[index].code;
             pboxPopup.confirm('Are you sure you want to sync box sensors ?')
-                .then(function(confirmed) {
+                .then(function (confirmed) {
                     if (confirmed) {
                         boxService.syncBox(box)
-                            .then(function(data) {
+                            .then(function () {
                                 loadBoxes();
                             });
-                    } else {
-                        false;
                     }
                 });
         }
     }
-})();
+})(window.angular);

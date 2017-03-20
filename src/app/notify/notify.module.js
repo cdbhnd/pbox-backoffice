@@ -1,4 +1,4 @@
 (function (angular) {
     angular
-        .module('pbox.box', []);
+        .module('pbox.notify', ['ngNotify']);
 })(window.angular);

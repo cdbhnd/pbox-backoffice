@@ -1,16 +1,13 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.auth')
         .controller('authController', authController);
 
-    /** @ngInject */
-    function authController($state, $q, authService, UserModel, ngNotify) {
-
+    /**@ngInject */
+    function authController($state, $q, authService, UserModel, notifyService) {
         var vm = this;
 
-        // public methods
+        //public methods
         vm.loginUser = loginUser;
         vm.submitForm = submitForm;
         vm.logout = logoutUser;
@@ -20,16 +17,17 @@
 
         /////////////////////////////////////
 
-        (function activate() {
+        /**Activate */
+        (function () {
             checkIfUserAlreadyLogedIn();
         }());
 
         /////////////////////////////////////
 
         function checkIfUserAlreadyLogedIn() {
-            return $q.when(function() {
+            return $q.when(function () {
                 return authService.currentUser()
-                    .then(function(user) {
+                    .then(function (user) {
                         if (!!user) {
                             $state.go('boxes-overview');
                             return false;
@@ -42,21 +40,20 @@
         function loginUser() {
             if (vm.user.username && vm.user.password) {
                 login()
-                    .then(function(response) {
+                    .then(function () {
                         $state.go('boxes-overview');
                     })
-                    .catch(function(e) {
+                    .catch(function (e) {
                         if (e.status === 401) {
-                            ngNotify.set('Wrong username or password!', 'error');
+                            notifyService.warn('Wrong username or password!');
                         }
                         if (e.status === 500) {
-                            ngNotify.set('Something went wrong, please try leater!', 'info');
+                            notifyService.error('Something went wrong, please try leater!');
                         }
-                    })
-                    .finally(function() {});
+                    });
             } else {
                 if (!vm.user.username || !vm.user.password) {
-                    ngNotify.set('Username or password is missing!', 'error');
+                    notifyService.warn('Username or password is missing!');
                 }
             }
         }
@@ -64,7 +61,7 @@
         function submitForm(isValid) {
             if (!!isValid) {
                 loginUser();
-            };
+            }
         }
 
         function logoutUser() {
@@ -73,7 +70,7 @@
         }
 
         function redirectToLogin() {
-            return $q.when(function() {
+            return $q.when(function () {
                 $state.go('login');
             }());
         }
@@ -82,4 +79,4 @@
             return authService.login(vm.user.username, vm.user.password);
         }
     }
-})();
+})(window.angular);

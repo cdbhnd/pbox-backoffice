@@ -1,13 +1,10 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox')
         .factory('BoxModel', boxModelFactory);
 
-    /** @ngInject */
+    /**@ngInject */
     function boxModelFactory(iotService, GeolocationModel) {
-
         function BoxModel(obj) {
             this.id = obj && obj.id ? obj.id : null;
             this.code = obj && obj.code ? obj.code : null;
@@ -20,82 +17,71 @@
             this.clientKey = obj && obj.clientKey ? obj.clientKey : null;
             this.deviceId = obj && obj.deviceId ? obj.deviceId : null;
             this.deviceName = obj && obj.deviceName ? obj.deviceName : null;
-            this.gps_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'GPS') : null;
-            this.temp_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'TEMPERATURE') : null;
-            this.acc_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'ACCELEROMETER') : null;
-            this.battery_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'BATTERY') : null;
-            this.vibration_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'VIBRATION') : null;
+            this.gpsSensor = obj && obj.sensors ? findSensor(obj.sensors, 'GPS') : null;
+            this.tempSensor = obj && obj.sensors ? findSensor(obj.sensors, 'TEMPERATURE') : null;
+            this.accSensor = obj && obj.sensors ? findSensor(obj.sensors, 'ACCELEROMETER') : null;
+            this.batterySensor = obj && obj.sensors ? findSensor(obj.sensors, 'BATTERY') : null;
+            this.vibrationSensor = obj && obj.sensors ? findSensor(obj.sensors, 'VIBRATION') : null;
 
-
-            this._listen_active = false;
-            this._sensors = obj && obj.sensors ? obj.sensors : [];
+            this.listenActive = false;
+            this.sensors = obj && obj.sensors ? obj.sensors : [];
         }
 
-        BoxModel.prototype.activate = function() {
-            if (!this._listen_active) {
-                iotService.listen(this);
-                this._listen_active = true;
+        BoxModel.prototype.activate = function () {
+            if (!this.listenActive) {
+                iotService.listenBox(this);
+                this.listenActive = true;
             }
-        }
+        };
 
-        BoxModel.prototype.deactivate = function() {
-            if (this._listen_active) {
-                iotService.stopListen(this.id);
-                this._listen_active = false;
+        BoxModel.prototype.deactivate = function () {
+            if (this.listenActive) {
+                iotService.stopListenBox(this.id);
+                this.listenActive = false;
             }
-        }
+        };
 
-        BoxModel.prototype.setSensorValue = function(sensorId, value) {
-            if (!!this.gps_sensor && this.gps_sensor.assetId == sensorId) {
-                console.log('GPS sensor updated');
-                console.log(value);
+        BoxModel.prototype.setSensorValue = function (sensorId, value) {
+            if (!!this.gpsSensor && this.gpsSensor.assetId === sensorId) {
                 var geolocationModel = new GeolocationModel();
-                this.gps_sensor.value = geolocationModel.parseGpsSensorValue(value);
+                this.gpsSensor.value = geolocationModel.parseGpsSensorValue(value);
             }
-            if (!!this.temp_sensor && this.temp_sensor.assetId == sensorId) {
-                console.log('Temp sensor updated');
-                console.log(value);
-                var tempHumi = value.split(",");
-                this.temp_sensor.value = {
+            if (!!this.tempSensor && this.tempSensor.assetId === sensorId) {
+                var tempHumi = value.split(',');
+                this.tempSensor.value = {
                     temperature: tempHumi[0],
                     humidity: tempHumi[1]
-                }
+                };
             }
-            if (!!this.acc_sensor && this.acc_sensor.assetId == sensorId) {
-                console.log('Acc sensor updated');
-                console.log(value);
-                var accelerometerValues = value.split(",");
-                this.acc_sensor.value = {
+            if (!!this.accSensor && this.accSensor.assetId === sensorId) {
+                var accelerometerValues = value.split(',');
+                this.accSensor.value = {
                     ax: accelerometerValues[0],
                     ay: accelerometerValues[1],
                     az: accelerometerValues[2]
                 };
             }
-            if (!!this.battery_sensor && this.battery_sensor.assetId == sensorId) {
-                console.log('Battery sensor updated');
-                console.log(value);
-                var batteryData = value.split(",");
-                this.battery_sensor.value = {
+            if (!!this.batterySensor && this.batterySensor.assetId === sensorId) {
+                var batteryData = value.split(',');
+                this.batterySensor.value = {
                     percentage: batteryData[0],
                     charging: batteryData[1]
-                }
+                };
             }
-            if (!!this.vibration_sensor && this.vibration_sensor.assetId == sensorId) {
-                console.log('Vibration sensor updated');
-                console.log(value);
-                this.vibration_sensor.value = parseInt(value);
+            if (!!this.vibrationSensor && this.vibrationSensor.assetId === sensorId) {
+                this.vibrationSensor.value = parseInt(value, 10);
             }
-        }
+        };
 
         return BoxModel;
 
         function findSensor(sensors, type) {
-            // find and return sensor by type;
             for (var i = 0; i < sensors.length; i++) {
-                if (sensors[i].type == type) {
+                if (sensors[i].type === type) {
                     return sensors[i];
                 }
             }
+            return null;
         }
     }
-})();
+})(window.angular);

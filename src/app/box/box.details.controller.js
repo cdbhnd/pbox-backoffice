@@ -1,21 +1,16 @@
-(function() {
-    'use strict';
-
+(function (angular, google) {
     angular
         .module('pbox.box')
         .controller('boxDetailsController', boxDetailsController);
 
-    /** @ngInject */
-    function boxDetailsController($q, $scope, $interval, $stateParams, $state, mapConfig, boxService, geolocationService, GeolocationModel) {
-
+    /**@ngInject */
+    function boxDetailsController($q, $scope, $interval, $stateParams, $state, mapConfig, boxService,
+        geolocationService, GeolocationModel) {
         var vm = this;
-
-        // public methods
-
-        //variables and properties
         var pollingPromise;
         var boxCode = $stateParams.boxCode;
         var fallbackCoords = new GeolocationModel();
+
         vm.loading = false;
         vm.box = {
             code: null
@@ -25,7 +20,8 @@
 
         /////////////////////////////////////
 
-        (function activate() {
+        /**Activate */
+        (function () {
             startLoading()
                 .then(pollBoxesStatus)
                 .then(getCurrentLocation)
@@ -39,22 +35,22 @@
         /////////////////////////////////////
 
         function startLoading() {
-            return $q.when(function() {
+            return $q.when(function () {
                 vm.loading = true;
             });
         }
 
         function getCurrentLocation() {
             return geolocationService.getCurrentLocation()
-                .then(function(coords) {
+                .then(function (coords) {
                     fallbackCoords = coords;
                     return true;
                 });
         }
 
         function pollBoxesStatus() {
-            return $q.when(function() {
-                pollingPromise = $interval(function() {
+            return $q.when(function () {
+                pollingPromise = $interval(function () {
                     return loadBoxesStatus();
                 }, 10000);
                 return true;
@@ -63,10 +59,10 @@
 
         function loadBox() {
             return boxService.getSingleBox(boxCode)
-                .then(function(response) {
+                .then(function (response) {
                     vm.box = response;
                     vm.box.activate();
-                    $scope.$on('$destroy', function() {
+                    $scope.$on('$destroy', function () {
                         vm.box.deactivate();
                     });
                     return true;
@@ -74,10 +70,10 @@
         }
 
         function loadMapMarker() {
-            return $q.when(function() {
-                $scope.$watch('vm.box.gps_sensor.value', function() {
-                    if (!!vm.box.gps_sensor && vm.box.gps_sensor.value) {
-                        setMarkerProperties(vm.box.gps_sensor.value);
+            return $q.when(function () {
+                $scope.$watch('vm.box.gpsSensor.value', function () {
+                    if (!!vm.box.gpsSensor && vm.box.gpsSensor.value) {
+                        setMarkerProperties(vm.box.gpsSensor.value);
                         setMapOptions();
                     }
                 }, true);
@@ -85,7 +81,7 @@
         }
 
         function setMapOptions() {
-            return $q.when(function() {
+            return $q.when(function () {
                 vm.mapOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
                 vm.mapOptions.streetViewControlOptions.position = google.maps.ControlPosition.RIGHT_CENTER;
                 vm.mapOptions.mapCenter = vm.mapMarkers[0] ? vm.mapMarkers[0] : fallbackCoords;
@@ -93,8 +89,8 @@
         }
 
         function cancelPollingPromiseOnScopeDestroy() {
-            return $q.when(function() {
-                $scope.$on('$destroy', function() {
+            return $q.when(function () {
+                $scope.$on('$destroy', function () {
                     if (!!pollingPromise) {
                         $interval.cancel(pollingPromise);
                     }
@@ -104,7 +100,7 @@
         }
 
         function stopLoading() {
-            return $q.when(function() {
+            return $q.when(function () {
                 vm.loading = false;
             });
         }
@@ -117,12 +113,9 @@
             }
 
             return boxService.getBoxStatus(vm.box.code)
-                .then(function(response) {
+                .then(function (response) {
                     vm.box.status = response.status;
                     return true;
-                })
-                .catch(function(e) {
-                    console.log(e);
                 });
         }
 
@@ -131,7 +124,7 @@
             vm.mapMarkers.push({
                 latitude: parseFloat(geolocationObj.latitude),
                 longitude: parseFloat(geolocationObj.longitude)
-            })
+            });
         }
     }
-})();
+})(window.angular, window.google);

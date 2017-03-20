@@ -1,11 +1,9 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.popup')
         .controller('confirmModalInstanceController', confirmModalInstanceController);
 
-    /** @ngInject */
+    /**@ngInject */
     function confirmModalInstanceController($uibModalInstance, options) {
         //properties
         var ctrl = this;
@@ -22,6 +20,5 @@
         function no() {
             $uibModalInstance.close(false);
         }
-        
     }
-})();
+})(window.angular);

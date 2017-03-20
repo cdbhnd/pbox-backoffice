@@ -1,6 +1,4 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
-        .module('pbox.popup',[]);
-})();
+        .module('pbox.popup', []);
+})(window.angular);

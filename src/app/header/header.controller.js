@@ -1,27 +1,18 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.header')
         .controller('headerController', headerController);
 
-    /** @ngInject */
+    /**@ngInject */
     function headerController($state) {
-
         var vm = this;
 
-        // public methods
+        //public methods
         vm.toggleDropdown = toggleDropdown;
         vm.changeState = changeState;
 
         //variables and properties
         vm.showDropdown = false;
-
-        /////////////////////////////////////
-
-        (function activate() {}());
-
-        /////////////////////////////////////
 
         function toggleDropdown() {
             vm.showDropdown = !vm.showDropdown;
@@ -33,6 +24,7 @@
                 return false;
             }
             toggleDropdown();
+            return true;
         }
     }
-})();
+})(window.angular);

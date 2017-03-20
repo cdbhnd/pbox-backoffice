@@ -11,5 +11,8 @@
         "POST": "POST",
         "PUT": "PUT",
         "DELETE": "DELETE"
+    },
+    "att": {
+        "STOMP_HOST": "https://api.allthingstalk.io:15671/stomp"
     }
 }
