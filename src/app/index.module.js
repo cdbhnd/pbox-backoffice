@@ -1,8 +1,6 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
-        .module('pbox', ['angularMoment', 
+        .module('pbox', ['angularMoment',
             'ngNotify',
             'ui.router',
             'ngStorage',
@@ -16,16 +14,15 @@
             'pbox.management',
             'pbox.auth',
             'pbox.iot',
-            'pbox.loader',
             'pbox.popup'
         ])
-        .run(function($rootScope, $state, authService) {
+        .run(function ($rootScope, $state, authService) {
             authService.init();
             $rootScope.current_state = $state.current;
             $rootScope.$on('$stateChangeSuccess',
-                function(event, toState, toParams, fromState, fromParams) {
+                function (event, toState, toParams, fromState) {
                     $rootScope.current_state = toState;
                     $rootScope.previous_state = fromState;
                 });
         });
-})();
+})(window.angular);

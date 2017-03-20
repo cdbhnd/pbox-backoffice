@@ -1,17 +1,13 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.geolocation')
         .service('geolocationService', geolocationService);
 
-    /** @ngInject */
+    /**@ngInject */
     function geolocationService($q, $window, GeolocationModel) {
         var service = this;
 
         service.getCurrentLocation = getCurrentLocation;
-
-        var _currentLocation;
 
         //////////////////////////////
 
@@ -22,13 +18,13 @@
                 deferred.reject('Geolocation not supported.');
             } else {
                 $window.navigator.geolocation.getCurrentPosition(
-                    function(position) {
+                    function (position) {
                         var coords = new GeolocationModel;
                         coords.latitude = position.coords.latitude;
                         coords.longitude = position.coords.longitude;
                         deferred.resolve(coords);
                     },
-                    function(err) {
+                    function () {
                         var fallbackCoords = new GeolocationModel();
                         fallbackCoords.latitude = 44.811155;
                         fallbackCoords.longitude = 20.446182;
@@ -39,4 +35,4 @@
             return deferred.promise;
         }
     }
-})();
+})(window.angular);

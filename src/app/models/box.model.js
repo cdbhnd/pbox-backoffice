@@ -1,13 +1,10 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox')
         .factory('BoxModel', boxModelFactory);
 
-    /** @ngInject */
+    /**@ngInject */
     function boxModelFactory(iotService, GeolocationModel) {
-
         function BoxModel(obj) {
             this.id = obj && obj.id ? obj.id : null;
             this.code = obj && obj.code ? obj.code : null;
@@ -27,75 +24,76 @@
             this.vibration_sensor = obj && obj.sensors ? findSensor(obj.sensors, 'VIBRATION') : null;
 
 
-            this._listen_active = false;
-            this._sensors = obj && obj.sensors ? obj.sensors : [];
+            this.listenActive = false;
+            this.sensors = obj && obj.sensors ? obj.sensors : [];
         }
 
-        BoxModel.prototype.activate = function() {
-            if (!this._listen_active) {
+        BoxModel.prototype.activate = function () {
+            if (!this.listenActive) {
                 iotService.listen(this);
-                this._listen_active = true;
+                this.listenActive = true;
             }
-        }
+        };
 
-        BoxModel.prototype.deactivate = function() {
-            if (this._listen_active) {
+        BoxModel.prototype.deactivate = function () {
+            if (this.listenActive) {
                 iotService.stopListen(this.id);
-                this._listen_active = false;
+                this.listenActive = false;
             }
-        }
+        };
 
-        BoxModel.prototype.setSensorValue = function(sensorId, value) {
-            if (!!this.gps_sensor && this.gps_sensor.assetId == sensorId) {
+        BoxModel.prototype.setSensorValue = function (sensorId, value) {
+            if (!!this.gps_sensor && this.gps_sensor.assetId === sensorId) {
                 console.log('GPS sensor updated');
                 console.log(value);
                 var geolocationModel = new GeolocationModel();
                 this.gps_sensor.value = geolocationModel.parseGpsSensorValue(value);
             }
-            if (!!this.temp_sensor && this.temp_sensor.assetId == sensorId) {
+            if (!!this.temp_sensor && this.temp_sensor.assetId === sensorId) {
                 console.log('Temp sensor updated');
                 console.log(value);
-                var tempHumi = value.split(",");
+                var tempHumi = value.split(',');
                 this.temp_sensor.value = {
                     temperature: tempHumi[0],
                     humidity: tempHumi[1]
-                }
+                };
             }
-            if (!!this.acc_sensor && this.acc_sensor.assetId == sensorId) {
+            if (!!this.acc_sensor && this.acc_sensor.assetId === sensorId) {
                 console.log('Acc sensor updated');
                 console.log(value);
-                var accelerometerValues = value.split(",");
+                var accelerometerValues = value.split(',');
                 this.acc_sensor.value = {
                     ax: accelerometerValues[0],
                     ay: accelerometerValues[1],
                     az: accelerometerValues[2]
                 };
             }
-            if (!!this.battery_sensor && this.battery_sensor.assetId == sensorId) {
+            if (!!this.battery_sensor && this.battery_sensor.assetId === sensorId) {
                 console.log('Battery sensor updated');
                 console.log(value);
-                var batteryData = value.split(",");
+                var batteryData = value.split(',');
                 this.battery_sensor.value = {
                     percentage: batteryData[0],
                     charging: batteryData[1]
-                }
+                };
             }
-            if (!!this.vibration_sensor && this.vibration_sensor.assetId == sensorId) {
+            if (!!this.vibration_sensor && this.vibration_sensor.assetId === sensorId) {
                 console.log('Vibration sensor updated');
                 console.log(value);
-                this.vibration_sensor.value = parseInt(value);
+                this.vibration_sensor.value = parseInt(value, 10);
             }
-        }
+        };
 
         return BoxModel;
 
         function findSensor(sensors, type) {
-            // find and return sensor by type;
+            //find and return sensor by type;
             for (var i = 0; i < sensors.length; i++) {
-                if (sensors[i].type == type) {
+                if (sensors[i].type === type) {
                     return sensors[i];
                 }
             }
+            return null;
         }
     }
-})();
+})(window.angular);

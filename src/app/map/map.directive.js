@@ -1,13 +1,10 @@
-(function() {
-    'use strict';
-
+(function (angular, google) {
     angular
         .module('pbox.map')
         .directive('mapPane', mapPaneDirective);
 
-    /** @ngInject */
+    /**@ngInject */
     function mapPaneDirective($q, $rootScope, $window) {
-
         return {
             restrict: 'E',
             link: link,
@@ -21,8 +18,7 @@
             }
         };
 
-        function link(scope, element, attrs) {
-
+        function link(scope) {
             var markerIcon = {
                 path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
                 fillColor: '#e6636a',
@@ -32,18 +28,16 @@
                 strokeWeight: 0
             };
             var markers = [];
-            var directions = {};
-            var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-            var directionsService = new google.maps.DirectionsService();
             var headerSize = 60;
 
             scope.mapId = guid();
             scope.map = null;
-            scope.drawDirections = scope.drawDirections ? true : false;
+            scope.drawDirections = !!scope.drawDirections;
             scope.fitWindowHeight = !!scope.fitWindowHeight;
             scope.height = null;
 
-            (function activate() {
+            /**Activate */
+            (function () {
                 scope.height = $window.innerHeight - headerSize;
                 subscribeOnOptionsChange()
                     .then(watchWindowHeightChanges)
@@ -51,32 +45,36 @@
             }());
 
             function subscribeOnOptionsChange() {
-                return $q.when(function() {
-                    scope.$watch('mapOptions', function() {
+                return $q.when(function () {
+                    scope.$watch('mapOptions', function () {
                         if (!scope.mapOptions.mapCenter) {
                             return false;
                         }
-                        var center = new google.maps.LatLng(scope.mapOptions.mapCenter.latitude, scope.mapOptions.mapCenter.longitude);
                         var opts = angular.copy(scope.mapOptions);
+                        var center = new google.maps.LatLng(opts.mapCenter.latitude, opts.mapCenter.longitude);
                         opts.center = center;
                         scope.map = new google.maps.Map(document.getElementById(scope.mapId), opts);
+                        return true;
                     }, true);
                 }());
             }
 
             function subscribeOnMarkersChange() {
-                return $q.when(function() {
-                    scope.$watch('mapMarkers', function() {
+                return $q.when(function () {
+                    scope.$watch('mapMarkers', function () {
                         if (!scope.map) {
                             return false;
                         }
                         removeMarkersFromMap();
 
-                        for (var i = 0; i < scope.mapMarkers.length; i++) {
-                            buildMarker(scope.mapMarkers[i].latitude, scope.mapMarkers[i].longitude, scope.map, scope.mapMarkers[i].code);
+                        var i;
+
+                        for (i = 0; i < scope.mapMarkers.length; i++) {
+                            buildMarker(scope.mapMarkers[i].latitude, scope.mapMarkers[i].longitude,
+                                scope.map, scope.mapMarkers[i].code);
                         }
                         var bounds = new google.maps.LatLngBounds();
-                        for (var i = 0; i < markers.length; i++) {
+                        for (i = 0; i < markers.length; i++) {
                             bounds.extend(markers[i].getPosition());
                         }
                         if (!!scope.mapOptions.zoom) {
@@ -85,13 +83,14 @@
                             scope.map.fitBounds(bounds);
                             scope.map.setZoom(14);
                         }
+                        return true;
                     }, true);
                 }());
             }
 
             function watchWindowHeightChanges() {
-                return $q.when(function() {
-                    angular.element($window).bind('resize', function() {
+                return $q.when(function () {
+                    angular.element($window).bind('resize', function () {
                         scope.height = $window.innerHeight - headerSize;
                         $rootScope.heightMap = scope.height;
                         console.log(scope.height);
@@ -114,25 +113,6 @@
                     markers[i].setMap(null);
                 }
             }
-
-            function getDirectionsStart() {
-                return markers[0].getPosition();
-            }
-
-            function getDirectionsEnd() {
-                return markers[markers.length - 1].getPosition();
-            }
-
-            function getDirectionWaypoints() {
-                var waypts = [];
-                for (var i = 1; i < (markers.length - 1); i++) {
-                    waypts.push({
-                        location: markers[i].getPosition(),
-                        stopover: true
-                    });
-                }
-                return waypts;
-            }
         }
     }
 
@@ -145,4 +125,4 @@
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     }
-})();
+})(window.angular, window.google);

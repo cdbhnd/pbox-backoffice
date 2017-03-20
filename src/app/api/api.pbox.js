@@ -1,11 +1,9 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.api')
         .service('pboxApi', pboxApi);
 
-    /** @ngInject */
+    /**@ngInject */
     function pboxApi($http, config, $localStorage) {
         var service = this;
 
@@ -14,7 +12,6 @@
         //////////////////////////////////
 
         function http(params) {
-
             params.url = config.pboxAPI.HOST + params.url;
 
             if (!!$localStorage.current_user && !!$localStorage.current_user.token) {
@@ -25,9 +22,9 @@
             }
 
             return $http(params)
-                .then(function(response) {
+                .then(function (response) {
                     return response.data;
                 });
         }
     }
-})();
+})(window.angular);

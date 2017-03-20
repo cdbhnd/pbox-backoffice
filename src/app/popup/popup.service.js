@@ -1,11 +1,10 @@
-(function () {
+(function (angular) {
     angular
         .module('pbox.popup')
         .service('pboxPopup', pboxPopup);
 
-    /** @ngInject */
+    /**@ngInject */
     function pboxPopup($uibModal) {
-
         var service = this;
 
         service.confirm = confirm;
@@ -17,21 +16,20 @@
                 controller: 'confirmModalInstanceController as ctrl',
                 size: 'sm',
                 resolve: {
-                    options: function() {
+                    options: function () {
                         return {
                             message: message
                         };
                     }
                 }
-               
+
             });
 
             return modalInstance
                 .result
-                .then(function(result) {
+                .then(function (result) {
                     return result;
                 });
         }
     }
-
-})();
+})(window.angular);

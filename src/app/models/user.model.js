@@ -1,13 +1,10 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox')
         .factory('UserModel', userModelFactory);
 
-    /** @ngInject */
+    /**@ngInject */
     function userModelFactory() {
-
         function UserModel(obj) {
             this.id = obj && obj.id ? obj.id : null;
             this.first_name = obj && obj.firstName ? obj.firstName : null;
@@ -19,4 +16,4 @@
         }
         return UserModel;
     }
-})();
+})(window.angular);

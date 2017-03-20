@@ -1,10 +1,7 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox')
-        .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-
+        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
             $stateProvider
                 .state('login', {
                     url: '',
@@ -32,5 +29,7 @@
                     url: '/history',
                     templateUrl: 'app/history/history.html'
                 });
+
+            $urlRouterProvider.otherwise('/');
         }]);
-})();
+})(window.angular);

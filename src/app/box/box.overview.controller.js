@@ -1,27 +1,19 @@
-(function() {
-    'use strict';
-
+(function (angular) {
     angular
         .module('pbox.box')
         .controller('boxOverviewController', boxOverviewController);
 
-    /** @ngInject */
-    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService, GeolocationModel, boxService, iotService) {
-
+    /**@ngInject */
+    function boxOverviewController($interval, $scope, $q, $timeout, $stateParams, $state, mapConfig, geolocationService,
+        GeolocationModel, boxService, iotService) {
         var vm = this;
-
-        // public methods
-        vm.filterBoxes = filterBoxes;
-
-        //variables and properties
-        var pollingPromise;
         var boxes = [];
         var filterInitialized = false;
         var listening = false;
         var center = null;
+
         vm.loading = false;
         vm.mapOptions = angular.copy(mapConfig.mapOptions);
-        // vm.mapOptions.zoom = null;
         vm.mapMarkers = [];
         vm.filteredBoxes = [];
         vm.filterQuery = {
@@ -31,44 +23,37 @@
         };
         vm.blueprintFilteredBoxes = [];
         vm.noResults = false;
+
+        vm.filterBoxes = filterBoxes;
+
         /////////////////////////////////////
 
-        (function activate() {
-            $scope.$on('$destroy', function() {
+        /**Activate */
+        (function () {
+            $scope.$on('$destroy', function () {
                 iotService.stopListenAll();
             });
             startLoading()
-                // .then(pollBoxesStatus)
                 .then(getCurrentLocation)
                 .then(loadBoxes)
                 .then(filterBoxes)
                 .then(listenBoxes)
                 .then(loadMapMarkers)
                 .then(setMapOptions)
-                // .then(cancelPollingPromiseOnScopeDestroy)
                 .finally(stopLoading);
         }());
 
         /////////////////////////////////////
 
         function startLoading() {
-            return $q.when(function() {
+            return $q.when(function () {
                 vm.loading = true;
             });
         }
 
-        function pollBoxesStatus() {
-            return $q.when(function() {
-                pollingPromise = $interval(function() {
-                    return loadBoxesStatus();
-                }, 10000);
-                return true;
-            }());
-        }
-
         function getCurrentLocation() {
             return geolocationService.getCurrentLocation()
-                .then(function(coords) {
+                .then(function (coords) {
                     center = coords;
                     vm.mapOptions.mapCenter = center;
                     return true;
@@ -77,13 +62,13 @@
 
         function loadBoxes() {
             return boxService.getAllBoxes()
-                .then(function(response) {
+                .then(function (response) {
                     if (response) {
                         for (var i = 0; i < response.length; i++) {
                             boxes.push(response[i]);
                         }
-                        for (var i = 0; i < response.length; i++) {
-                            if (boxes[i].status != 'IDLE') {
+                        for (i = 0; i < response.length; i++) {
+                            if (boxes[i].status !== 'IDLE') {
                                 vm.blueprintFilteredBoxes.push(boxes[i]);
                             }
                         }
@@ -91,42 +76,43 @@
                         vm.noResults = true;
                     }
                 })
-                .catch(function(e) {
+                .catch(function (e) {
                     console.log(e);
                 });
         }
 
         function filterBoxes() {
-            return $q.when(function() {
+            return $q.when(function () {
                 var query = vm.filterQuery;
 
                 vm.filteredBoxes.length = 0;
+                var i;
 
                 if (!query.activeStatus && query.sleepStatus) {
-                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                        if (vm.blueprintFilteredBoxes[i].status == 'SLEEP') {
+                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                        if (vm.blueprintFilteredBoxes[i].status === 'SLEEP') {
                             vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
                         }
                     }
                 } else if (query.activeStatus && !query.sleepStatus) {
-                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                        if (vm.blueprintFilteredBoxes[i].status == 'ACTIVE') {
+                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                        if (vm.blueprintFilteredBoxes[i].status === 'ACTIVE') {
                             vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
                         }
                     }
                 } else if (!query.activeStatus && !query.sleepStatus) {
                     vm.filteredBoxes.length = 0;
                 } else {
-                    for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
+                    for (i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
                         vm.filteredBoxes.push(vm.blueprintFilteredBoxes[i]);
                     }
                 }
 
-                if (!!query.code && query.code != '') {
+                if (!!query.code && query.code !== '') {
                     var helper = angular.copy(vm.filteredBoxes);
                     var searchQuery = query.code.toLowerCase();
                     vm.filteredBoxes.length = 0;
-                    for (var i = 0; i < helper.length; i++) {
+                    for (i = 0; i < helper.length; i++) {
                         var box = helper[i].code.toLowerCase();
                         if (box.includes(searchQuery)) {
                             vm.filteredBoxes.push(helper[i]);
@@ -134,7 +120,7 @@
                     }
                 }
 
-                if (vm.filteredBoxes.length == 0) {
+                if (vm.filteredBoxes.length === 0) {
                     vm.noResults = true;
                 } else {
                     vm.noResults = false;
@@ -147,13 +133,13 @@
         }
 
         function listenBoxes() {
-            return $q.when(function() {
+            return $q.when(function () {
                 iotService.stopListenAll();
-                if ((!!vm.filteredBoxes && vm.filteredBoxes.length != 0) && !listening) {
+                if ((!!vm.filteredBoxes && vm.filteredBoxes.length !== 0) && !listening) {
                     listening = true;
                     var listeningBoxes = [];
                     for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                        if (vm.filteredBoxes[i].status == 'ACTIVE') {
+                        if (vm.filteredBoxes[i].status === 'ACTIVE') {
                             listeningBoxes.push(vm.filteredBoxes[i]);
                         }
                     }
@@ -166,18 +152,17 @@
         }
 
         function loadMapMarkers() {
-            return $q.when(function() {
-                    $scope.$watch('vm.filteredBoxes', function() {
-                        vm.mapMarkers.length = 0;
-                        for (var i = 0; i < vm.filteredBoxes.length; i++) {
-                            if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
-                                setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
-                            }
+            return $q.when(function () {
+                $scope.$watch('vm.filteredBoxes', function () {
+                    vm.mapMarkers.length = 0;
+                    for (var i = 0; i < vm.filteredBoxes.length; i++) {
+                        if (!!vm.filteredBoxes[i].gps_sensor && vm.filteredBoxes[i].gps_sensor.value) {
+                            setMarkerProperties(vm.filteredBoxes[i].gps_sensor.value);
                         }
-                        filterInitialized = true;
-                    }, true);
-
-                }())
+                    }
+                    filterInitialized = true;
+                }, true);
+            }())
                 .then(listenBoxes);
         }
 
@@ -192,45 +177,10 @@
             });
         }
 
-        function cancelPollingPromiseOnScopeDestroy() {
-            return $q.when(function() {
-                $scope.$on('$destroy', function() {
-                    if (!!pollingPromise) {
-                        $interval.cancel(pollingPromise);
-                    }
-                });
-                return true;
-            }());
-        }
-
         function stopLoading() {
-            return $q.when(function() {
+            return $q.when(function () {
                 vm.loading = false;
             });
         }
-
-        ////////////////////////////////////////////// helper function's
-
-        function loadBoxesStatus() {
-            if (!vm.blueprintFilteredBoxes) {
-                return true;
-            }
-            for (var i = 0; i < vm.blueprintFilteredBoxes.length; i++) {
-                if (!!vm.blueprintFilteredBoxes[i]) {
-                    startStatusPolling(vm.blueprintFilteredBoxes[i]);
-                }
-            }
-            return true;
-        }
-
-        function startStatusPolling(box) {
-            boxService.getBoxStatus(box.code)
-                .then(function(response) {
-                    box.status = response.status;
-                })
-                .catch(function(e) {
-                    console.log(e);
-                });
-        }
     }
-})();
+})(window.angular);
