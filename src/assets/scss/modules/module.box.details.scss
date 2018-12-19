@@ -1,0 +1,63 @@
+.details {
+    .container {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        .map {
+            margin: 0;
+            .inner {
+                padding: 0;
+            }
+        }
+        .params {
+            height: $footer_height;
+            margin: 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: $tertiary_color;
+            .param {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: center;
+                .inner {
+                    color: $primary_color;
+                    line-height: ($footer_height / 3) * 2;
+                    width: 50%;
+                    margin: 0 auto;
+                    border-radius: 10px;
+                    text-align: center;
+                    background-color: $secondary_color;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 955px) {
+    .details {
+        .container {
+            .params {
+                .param {
+                    .inner {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 348px) {
+    .details {
+        .container {
+            .params {
+                .param {
+                    .inner.gps {
+                        line-height: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

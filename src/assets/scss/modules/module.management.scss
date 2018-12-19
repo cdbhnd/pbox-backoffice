@@ -1,0 +1,126 @@
+.box-management {
+    form {
+        //search field of angular-table form
+        .top {
+            position: relative;
+            text-align: right;
+            .search-icon {
+                position: absolute;
+                right: 4px;
+                top: 4px;
+                color: $secondary_color;
+            }
+            .dataTables_filter {
+                margin-right: 0px!important;
+            }
+
+            label {
+                color: transparent;
+            }
+            input {
+                color: rgb(51, 51, 51);
+                font-family: Exo, sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                padding: 0px 17px 1px 5px;
+                border-color: $secondary_color;
+                margin-left: 6px;
+            }
+        }
+    }
+    .table-legend {
+        margin-top: 20px;
+        .legend-item {
+            display: inline-block;
+            .sensor-icon {
+                display: inline-block;
+                width: 46px;
+                margin-right: 10px;
+                img {
+                    width: 100%;
+                }
+            }
+            .sensor-info {
+                margin-right: 4px;
+                font-size: 14px;
+            }
+        }
+    }
+
+    table {
+        tr:nth-child(even) {
+            background: $row_color;
+        } 
+        th:last {
+            border-right: 0px;
+        }
+        th {
+            padding: 10px;
+            border-right: 1px solid $primary_color;
+            text-align: center;
+            color: $primary_color;
+            height: 45px;
+            color: $primary_color;
+            background-color: $secondary_color;
+        }
+
+        td:last-child {
+            border-right: 0px;
+            text-align: left;
+        }
+        td {
+            border-right: 1px solid $secondary_color;
+            text-align: center;
+            .button-sync-box {
+                color: $primary_color;
+                background-color: $green;
+            }
+            .button-toggle-box {
+                background-color: $yellow;
+            }
+            .button-delete-box {
+                background-color: $red;
+            }
+            .sensor-icon {
+                display: inline-block;
+                margin-right: 2px;
+                width: 30px;
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 720px) { 
+    .box-management {
+        .hide-720 {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 420px) { 
+    .box-management {
+        padding-left: 0px!important;
+        padding-right: 0px!important;
+        .hide-420 {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 992px) { 
+    .box-management {
+        table {
+            tr {
+                td {
+                    button {
+                        margin-bottom: 4px;
+                    }
+                }
+            }
+        }
+    }
+}

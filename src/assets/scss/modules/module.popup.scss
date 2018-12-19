@@ -1,0 +1,47 @@
+.modal-content {
+    background-color: $secondary_color;
+    border: 0px !important;
+    .modal-body {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        color: $primary_color;
+        background-color: $yellow;
+        text-align: center;
+    }
+    .modal-footer {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        background-color: $yellow;
+        text-align: center;
+        border-top-color: $yellow;
+        .button-wraper {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            .button-left {
+                position: absolute;
+                padding: 5px;
+                top: -24px;
+                left: 60px;
+                cursor: pointer;
+                width: 50px;
+                display: inline-block;
+                color: $primary_color;
+                background-color: $yellow;
+                border: 4px solid $primary_color;
+            }
+            .button-right {
+                padding: 5px;
+                position: absolute;
+                top: -24px;
+                right: 60px;
+                cursor: pointer;
+                width: 50px;
+                display: inline-block;
+                color: $primary_color;
+                background-color: $yellow;
+                border: 4px solid $primary_color;
+            }
+        }
+    }
+}

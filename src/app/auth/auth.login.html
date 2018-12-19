@@ -1,0 +1,15 @@
+<div class="login" ng-controller="authController as vm">
+    <form class="login-form" ng-submit="vm.submitForm(loginForm.$valid)" name="loginForm" novalidate>
+        <div class="image">
+            <img src="images/logo.png" alt="logo">
+        </div>
+        <div class="title">
+            <h1>PBox</h1>
+        </div>
+        <div class="list">
+            <input ng-class="{'invalid': (loginForm.usernameField.$valid === false) && loginForm.$submitted}" type="text" name="usernameField" placeholder="Username" ng-model="vm.user.username" required>
+            <input ng-class="{'invalid': (loginForm.passwordField.$valid === false) && loginForm.$submitted}" type="password" name="passwordField" placeholder="Password" ng-model="vm.user.password" required>
+        </div>
+        <input class="submit-button" type="submit">
+    </form>
+</div>

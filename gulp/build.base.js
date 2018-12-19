@@ -67,7 +67,8 @@
 
     gulp.task('fonts', function() {
         return gulp.src([
-                config.paths.ionic + '/fonts/*.*'
+                config.paths.src + '/fonts/*.*',
+                config.paths.node_modules + '/bootstrap/dist/fonts/*.*'
             ])
             .pipe(gulp.dest(config.paths.dist + '/fonts'));
     });
@@ -103,12 +104,18 @@
 
     gulp.task('libraries', function() {
         return gulp.src([
+                config.paths.node_modules + '/jquery/dist/jquery.min.js',
+                config.paths.node_modules + '/datatables/media/js/jquery.dataTables.min.js',
                 config.paths.node_modules + '/angular/angular.min.js',
                 config.paths.node_modules + '/angular-ui-router/release/angular-ui-router.min.js',
                 config.paths.node_modules + '/ngstorage/ngStorage.min.js',
                 config.paths.node_modules + '/moment/min/moment.min.js',
                 config.paths.node_modules + '/angular-moment/angular-moment.min.js',
-                config.paths.node_modules + '/stompjs/lib/stomp.min.js'
+                config.paths.node_modules + '/stompjs/lib/stomp.min.js',
+                config.paths.node_modules + '/bootstrap/dist/js/bootstrap.min.js',
+                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap.js',
+                config.paths.node_modules + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+                config.paths.node_modules + '/ng-notify/dist/ng-notify.min.js'
             ])
             .pipe(concatenate('libraries.js'))
             .pipe(rev())
@@ -138,7 +145,10 @@
 
     gulp.task('styles', function() {
         return gulp.src([
-                config.paths.src + '/assets/scss/index.scss'
+                config.paths.src + '/assets/scss/index.scss',
+                config.paths.node_modules + '/bootstrap/dist/css/bootstrap.min.css',
+                config.paths.node_modules + '/bootstrap/dist/js/bootstrap-theme.min.css',
+                config.paths.node_modules + '/ng-notify/dist/ng-notify.min.css'
             ])
             .pipe(sass().on('error', sass.logError))
             .pipe(concatenate('styles.css'))
